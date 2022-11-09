@@ -97,34 +97,36 @@ function update() {
     player.setCollideWorldBounds(true);
 
     var leftKey = this.input.keyboard.addKey('A');
-    var righttKey = this.input.keyboard.addKey('D');
+    var rightKey = this.input.keyboard.addKey('D');
     var upKey = this.input.keyboard.addKey('W');
     var downKey = this.input.keyboard.addKey('S');
 
+    // var movingX = false;
+    // var movingY = false;
+
     if (leftKey.isDown) {
         player.setVelocityX(-160);
-
         player.anims.play('left', true);
     }
-    else if (righttKey.isDown) {
+    else if (rightKey.isDown) {
         player.setVelocityX(160);
-
         player.anims.play('right', true);
     }
-    else if (upKey.isDown) {
-        player.setVelocityY(-160);
+    else {
+        player.setVelocityX(0);
+        player.anims.play('turn');
+    }
 
+    if (upKey.isDown) {
+        player.setVelocityY(-160);
         player.anims.play('up', true);
     }
     else if (downKey.isDown) {
         player.setVelocityY(160);
-
         player.anims.play('down', true);
     }
     else {
-        player.setVelocityX(0);
         player.setVelocityY(0);
-
         player.anims.play('turn');
     }
 
