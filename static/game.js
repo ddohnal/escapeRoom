@@ -21,15 +21,20 @@ var config = {
 var game = new Phaser.Game(config)
 
 var text;
-var question = 'ahoj';
+var question;
 
 
 function collectStar(player, star) {
 
     this.socket.emit('test', 'ahoj');
+    this.socket.on('test2', (arg) => {
+        text.setText('Question: ' + arg);
+        console.log(arg);
+
+    })
     star.disableBody(true, true);
     star.enableBody(true, Phaser.Math.Between(0, 800), Phaser.Math.Between(0, 600), true, true);
-    text.setText('Question: ' + question)
+
 }
 
 

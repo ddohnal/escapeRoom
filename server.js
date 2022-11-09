@@ -15,6 +15,7 @@ let rawQuestions = fs.readFileSync('questions.json');
 let questions = JSON.parse(rawQuestions);
 
 var players = {}
+var test = 1;
 
 
 app.set('port', 5000)
@@ -29,6 +30,11 @@ io.on('connection', function (socket) {
 
     socket.on('test', (arg) => {
         console.log('player: ' + socket.id + ' -> message: ' + arg);
+        if (arg == 'ahoj') {
+            socket.emit('test2', test);
+            console.log('Message: cau sended to player with id:' + socket.id);
+            test += 1;
+        }
     })
 })
 
