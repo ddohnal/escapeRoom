@@ -7,7 +7,7 @@ window.onload = function () {
         parent: 'phaser-example',
         width: 1920,
         height: 1080,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#D5A459',
         physics: {
             default: 'arcade',
             arcade: {
@@ -16,7 +16,10 @@ window.onload = function () {
             }
         },
         scene: [
+            loadAssets,
+            // createAssets,
             playGame
+
         ]
     }
     game = new Phaser.Game(config);

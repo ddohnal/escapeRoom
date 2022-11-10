@@ -1,17 +1,13 @@
 class playGame extends Phaser.Scene {
     constructor() {
-        super('PlayGame');
+        super('playGame');
 
         this.player;
         this.question;
     }
 
-    preload() {
-        this.load.image('star', 'static/assets/star.png')
-        this.load.spritesheet('dude', 'static/assets/dude.png',
-            { frameWidth: 32, frameHeight: 48 }
-        );
-    }
+
+
 
     create() {
         var self = this
