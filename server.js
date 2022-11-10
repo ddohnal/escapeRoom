@@ -14,8 +14,9 @@ var io = socketIO(server, {
 let rawQuestions = fs.readFileSync('questions.json');
 let questions = JSON.parse(rawQuestions);
 
+console.log(questions.history[0].q);
 var players = {}
-var test = 1;
+var questionToAsk;
 
 
 app.set('port', 5000)
@@ -30,10 +31,10 @@ io.on('connection', function (socket) {
 
     socket.on('test', (arg) => {
         console.log('player: ' + socket.id + ' -> message: ' + arg);
-        if (arg == 'ahoj') {
-            socket.emit('test2', test);
-            console.log('Message: cau sended to player with id:' + socket.id);
-            test += 1;
+        if (arg == 1) {
+            questionToAsk = questions.history[0].q
+            socket.emit('test2', questionToAsk);
+            console.log('Message: ' + questionToAsk + ' sended to player with id:' + socket.id);
         }
     })
 })
