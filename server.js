@@ -38,7 +38,7 @@ io.on('connection', function (socket) {
         }
         console.log('waiting for answer');
         socket.on('answer', (arg) => {
-            console.log('player answer is: ');
+            console.log('player answer is: ' + arg);
             if (questions.history[0].a == arg) {
                 socket.emit('result', true);
             }
