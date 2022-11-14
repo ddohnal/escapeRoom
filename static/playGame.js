@@ -100,6 +100,7 @@ class playGame extends Phaser.Scene {
 
         var self = this
 
+        console.log(star.id);
         this.socket.emit('getQuestion', star.id);
 
         this.element = this.add.dom(400, 600).createFromCache("form");
@@ -122,7 +123,7 @@ class playGame extends Phaser.Scene {
                     //  Turn off the click events
                     this.removeListener("click");
                 }
-                socket.on('result', (arg) => {
+                this.socket.on('result', (arg) => {
                     if (arg) {
                         console.log('correct answer');
                     }

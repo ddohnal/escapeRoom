@@ -32,20 +32,20 @@ io.on('connection', function (socket) {
     socket.on('getQuestion', (arg) => {
         console.log('player: ' + socket.id + ' -> message: ' + arg);
         if (arg == 1) {
-            questionToAsk = questions.history[1].q
+            questionToAsk = questions.history[0].q
             socket.emit('questionToAsk', questionToAsk);
-            console.log('Message: ' + questionToAsk + ' sended to player with id:' + socket.id);
+            console.log('Message: ' + questionToAsk + ' sent to player with id:' + socket.id);
         }
-
-    })
-    socket.on('answer', (arg) => {
-        console.log('player answer is: ' + arg);
-        if (questions.history[1].a == arg) {
-            socket.emit('result', true);
-        }
-        else {
-            socket.emit('result', false);
-        }
+        console.log('waiting for answer');
+        socket.on('answer', (arg) => {
+            console.log('player answer is: ');
+            if (questions.history[0].a == arg) {
+                socket.emit('result', true);
+            }
+            else {
+                socket.emit('result', false);
+            }
+        })
     })
 })
 
