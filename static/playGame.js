@@ -18,8 +18,6 @@ class playGame extends Phaser.Scene {
         this.star1 = this.physics.add.image(100, 300, 'star');
         this.star1.id = 1;
 
-        this.text = this.add.text(16, 16, 'Question', { fontSize: '32px', fill: '#000' });
-
         this.anims.create({
             key: 'left',
             frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -110,13 +108,11 @@ class playGame extends Phaser.Scene {
 
 
         this.socket.on('questionToAsk', (arg) => {
-            this.text.setText('Question: ' + arg);
             document.getElementById('question').innerHTML = arg;
         });
 
         this.element.on("click", function (event) {
             if (event.target.name === "sendAnswer") {
-
                 var answer = this.getChildByName("answer");
                 console.log(answer.value);
                 this.socket.emit('answer', answer.value);
@@ -126,9 +122,6 @@ class playGame extends Phaser.Scene {
                     //  Turn off the click events
                     this.removeListener("click");
                 }
-
-
-
                 socket.on('result', (arg) => {
                     if (arg) {
                         console.log('correct answer');
@@ -147,13 +140,6 @@ class playGame extends Phaser.Scene {
             ease: 'Power3'
         });
 
-
-
-
-
-
-
-        // })
         star.disableBody(true, true);
         // star.enableBody(true, Phaser.Math.Between(0, 800), Phaser.Math.Between(0, 600), true, true);
 
