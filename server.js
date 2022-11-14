@@ -29,12 +29,22 @@ app.get('/', function (request, response) {
 io.on('connection', function (socket) {
     console.log('player [' + socket.id + '] connected')
 
-    socket.on('test', (arg) => {
+    socket.on('getQuestion', (arg) => {
         console.log('player: ' + socket.id + ' -> message: ' + arg);
         if (arg == 1) {
-            questionToAsk = questions.history[0].q
-            socket.emit('test2', questionToAsk);
+            questionToAsk = questions.history[1].q
+            socket.emit('questionToAsk', questionToAsk);
             console.log('Message: ' + questionToAsk + ' sended to player with id:' + socket.id);
+        }
+
+    })
+    socket.on('answer', (arg) => {
+        console.log('player answer is: ' + arg);
+        if (questions.history[1].a == arg) {
+            socket.emit('result', true);
+        }
+        else {
+            socket.emit('result', false);
         }
     })
 })

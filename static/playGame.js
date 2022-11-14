@@ -10,11 +10,12 @@ class playGame extends Phaser.Scene {
 
 
     create() {
+
         var self = this
         this.socket = io()
 
         this.player = this.physics.add.sprite(100, 450, 'dude');
-        this.star1 = this.physics.add.image(500, 300, 'star');
+        this.star1 = this.physics.add.image(100, 300, 'star');
         this.star1.id = 1;
 
         this.text = this.add.text(16, 16, 'Question', { fontSize: '32px', fill: '#000' });
@@ -99,12 +100,60 @@ class playGame extends Phaser.Scene {
 
     collectStar(player, star) {
 
-        this.socket.emit('test', star.id);
-        this.socket.on('test2', (arg) => {
-            this.text.setText('Question: ' + arg);
-            console.log(arg);
+        var self = this
 
-        })
+        this.socket.emit('getQuestion', star.id);
+
+        this.element = this.add.dom(400, 600).createFromCache("form");
+        this.element.setPerspective(800);
+        this.element.addListener("click");
+
+
+        this.socket.on('questionToAsk', (arg) => {
+            this.text.setText('Question: ' + arg);
+            document.getElementById('question').innerHTML = arg;
+        });
+
+        this.element.on("click", function (event) {
+            if (event.target.name === "sendAnswer") {
+
+                var answer = this.getChildByName("answer");
+                console.log(answer.value);
+                this.socket.emit('answer', answer.value);
+
+                //  Have they entered anything?
+                if (answer.value !== '' && answer.value !== '') {
+                    //  Turn off the click events
+                    this.removeListener("click");
+                }
+
+
+
+                socket.on('result', (arg) => {
+                    if (arg) {
+                        console.log('correct answer');
+                    }
+                    else {
+                        console.log('wrong answer');
+                    }
+                })
+            }
+
+        });
+        this.tweens.add({
+            targets: this.element,
+            y: 300,
+            duration: 3000,
+            ease: 'Power3'
+        });
+
+
+
+
+
+
+
+        // })
         star.disableBody(true, true);
         // star.enableBody(true, Phaser.Math.Between(0, 800), Phaser.Math.Between(0, 600), true, true);
 

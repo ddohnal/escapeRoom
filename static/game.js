@@ -17,10 +17,15 @@ window.onload = function () {
         },
         scene: [
             loadAssets,
-            // createAssets,
             playGame
-
-        ]
+        ],
+        parent: 'show-form',
+        dom: {
+            createContainer: true
+        },
+        scale: {
+            zoom: 1
+        }
     }
     game = new Phaser.Game(config);
 }

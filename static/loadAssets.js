@@ -8,6 +8,7 @@ class loadAssets extends Phaser.Scene {
         this.load.spritesheet('dude', 'static/assets/dude.png',
             { frameWidth: 32, frameHeight: 48 }
         );
+        this.load.html("form", 'static/form.html');
     }
     create() {
         this.scene.start('playGame');
