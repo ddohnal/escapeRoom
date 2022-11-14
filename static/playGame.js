@@ -10,8 +10,6 @@ class playGame extends Phaser.Scene {
 
 
     create() {
-
-        var self = this
         this.socket = io()
 
         this.player = this.physics.add.sprite(100, 450, 'dude');
@@ -97,18 +95,17 @@ class playGame extends Phaser.Scene {
     }
 
     collectStar(player, star) {
-
-        var self = this
+        var socket = this.socket;
 
         console.log(star.id);
-        this.socket.emit('getQuestion', star.id);
+        socket.emit('getQuestion', star.id);
 
         this.element = this.add.dom(400, 600).createFromCache("form");
         this.element.setPerspective(800);
         this.element.addListener("click");
 
 
-        this.socket.on('questionToAsk', (arg) => {
+        socket.on('questionToAsk', (arg) => {
             document.getElementById('question').innerHTML = arg;
         });
 
@@ -116,14 +113,14 @@ class playGame extends Phaser.Scene {
             if (event.target.name === "sendAnswer") {
                 var answer = this.getChildByName("answer");
                 console.log(answer.value);
-                this.socket.emit('answer', answer.value);
+                socket.emit('answer', answer.value);
 
                 //  Have they entered anything?
                 if (answer.value !== '' && answer.value !== '') {
                     //  Turn off the click events
                     this.removeListener("click");
                 }
-                this.socket.on('result', (arg) => {
+                socket.on('result', (arg) => {
                     if (arg) {
                         console.log('correct answer');
                     }
