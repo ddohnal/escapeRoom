@@ -1,3 +1,37 @@
+const levelsConfig = [
+    //level one
+    {
+        levelID: 1,
+        //array of stars positions
+        stars: [
+            { x: 250, y: 150, id: 1 },
+            { x: 300, y: 150, id: 2 },
+            { x: 350, y: 150, id: 3 }
+        ]
+    },
+
+    //level two
+    {
+        levelID: 2,
+        //array of stars positions
+        stars: [
+            { x: 250, y: 200, id: 1 },
+            { x: 300, y: 200, id: 2 },
+            { x: 350, y: 200, id: 3 }
+        ]
+    },
+    //level three
+    {
+        levelID: 3,
+        //array of stars positions
+        stars: [
+            { x: 250, y: 250, id: 1 },
+            { x: 300, y: 250, id: 2 },
+            { x: 350, y: 250, id: 3 }
+        ]
+    },
+];
+
 class playGame extends Phaser.Scene {
     constructor() {
         super('playGame');
@@ -9,9 +43,19 @@ class playGame extends Phaser.Scene {
     create() {
         this.socket = io()
 
+        this.stars = [];
         this.player = this.physics.add.sprite(100, 450, 'dude');
-        this.star1 = this.physics.add.image(100, 300, 'star');
-        this.star1.id = 1;
+
+
+        for (let starPos of levelsConfig[0].stars) {
+            this.star = this.physics.add.image(starPos.x, starPos.y, 'star')
+            this.star.id = starPos.id
+            this.stars.push(this.star);
+        }
+
+        // console.log(this.stars);
+
+
 
         this.leftKey = this.input.keyboard.addKey('A');
         this.rightKey = this.input.keyboard.addKey('D');
@@ -54,36 +98,36 @@ class playGame extends Phaser.Scene {
     }
 
     update() {
-        this.physics.add.overlap(this.player, this.star1, this.collectStar, null, this);
+        this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
         this.player.setCollideWorldBounds(true);
 
         var moving = false;
 
         const playerVelocity = 2;
 
-       if (this.leftKey.isDown) {
-           this.player.x -= playerVelocity;
-           moving = true;
-           this.player.anims.play('left', true);
-       }
+        if (this.leftKey.isDown) {
+            this.player.x -= playerVelocity;
+            moving = true;
+            this.player.anims.play('left', true);
+        }
 
-       if (this.rightKey.isDown) {
-           this.player.x += playerVelocity;
-           moving = true;
-           this.player.anims.play('right', true);
-       }
+        if (this.rightKey.isDown) {
+            this.player.x += playerVelocity;
+            moving = true;
+            this.player.anims.play('right', true);
+        }
 
-       if (this.upKey.isDown) {
-           this.player.y -= playerVelocity;
-           moving = true;
-           this.player.anims.play('up', true);
-       }
+        if (this.upKey.isDown) {
+            this.player.y -= playerVelocity;
+            moving = true;
+            this.player.anims.play('up', true);
+        }
 
-       if (this.downKey.isDown) {
-           this.player.y += playerVelocity;
-           moving = true;
-           this.player.anims.play('down', true);
-       }
+        if (this.downKey.isDown) {
+            this.player.y += playerVelocity;
+            moving = true;
+            this.player.anims.play('down', true);
+        }
 
         if (!moving) {
             this.player.anims.play('turn');
@@ -95,6 +139,7 @@ class playGame extends Phaser.Scene {
         var socket = this.socket;
 
         console.log(star.id);
+        console.log(star.x, star.y);
         socket.emit('getQuestion', star.id);
 
         var element = this.add.dom(400, 600).createFromCache("form");
@@ -110,13 +155,14 @@ class playGame extends Phaser.Scene {
         element.on("click", function (event) {
             if (event.target.name === "sendAnswer") {
                 var answer = this.getChildByName("answer");
-                console.log(answer.value);
+                // console.log(answer.value);
                 socket.emit('answer', answer.value);
 
                 //  Have they entered anything?
                 if (answer.value !== '' && answer.value !== '') {
                     //  Turn off the click events
                     this.removeListener("click");
+                    // this.scene.tweens.add({ targets: element.rotate3d, x: 1, w: 90, duration: 3000, ease: 'Power3' });
                 }
                 socket.on('result', (arg) => {
                     if (arg) {
