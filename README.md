@@ -1,14 +1,12 @@
-# Escape Room
-
 Escape Room
 ==========================================================================================
 
 ## Prerequisites 
----
+
 - [`Node.js`](https://nodejs.org/en/)
 
 ## Start game
----
+
 - Open a terminal and navigate to `escapeRoom` root folder
 - Execute the command below if you are running it for the first time
  ```
