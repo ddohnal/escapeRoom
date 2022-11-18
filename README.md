@@ -12,10 +12,9 @@ Escape Room
  ```
   npm install
   ```
- -Run the following command to start the game server
+- Run the following command to start the game server
   ```
   node server.js
   ```
-
-  ## Play game
+## Play game
 - Open a browser and access http://localhost:5000
