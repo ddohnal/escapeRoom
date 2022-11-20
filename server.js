@@ -1,11 +1,8 @@
 const express = require('express');
-const fs = require('fs');
 const http = require('http');
 const path = require('path');
 const socketIO = require('socket.io')
-
 const { historyQ, historyA, geographyQ, geographyA, mathQ, mathA } = require('./questionExtract');
-
 
 console.log(historyQ);
 const app = express()
@@ -14,10 +11,8 @@ var io = socketIO(server, {
     pingTimeout: 60000,
 })
 
-
 var players = {}
 var questionToAsk;
-
 
 app.set('port', 5000)
 app.use('/static', express.static(__dirname + '/static'))
@@ -53,6 +48,7 @@ io.on('connection', function (socket) {
 
     }
     socket.on('getQuestion', (arg) => {
+        console.log('*****************************************');
         console.log('player: ' + socket.id + ' -> message: ' + arg);
 
         //check if chest.id is equal of chestFirstLevel[0]
@@ -65,11 +61,14 @@ io.on('connection', function (socket) {
             socket.on('answer', (arg) => {
                 console.log('player answer is: ' + arg);
                 if (players[socket.id].answersFirtLevel[players[socket.id].randomQuestionsFirstLevel[0]] == arg) {
+                    console.log('the player answered correctly');
                     socket.emit('result', true);
 
+                    console.log('Question removed: ' + players[socket.id].randomQuestionsFirstLevel[0]);
                     players[socket.id].randomQuestionsFirstLevel.shift();
                     console.log('Rest of random question: ' + players[socket.id].randomQuestionsFirstLevel);
 
+                    console.log('Chest ID removed: ' + players[socket.id].chestFirstLevelID[0]);
                     players[socket.id].chestFirstLevelID.shift();
                     console.log('Rest of chestID to pick up: ' + players[socket.id].chestFirstLevelID);
                 }
@@ -81,8 +80,6 @@ io.on('connection', function (socket) {
 
     })
 })
-
-
 
 server.listen(5000, function () {
     console.log('Starting server on port 5000')
