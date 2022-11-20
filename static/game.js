@@ -11,8 +11,7 @@ window.onload = function () {
         physics: {
             default: 'arcade',
             arcade: {
-                debug: true,
-                gravity: { y: 0 }
+                debug: true
             }
         },
         scene: [
