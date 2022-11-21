@@ -10,7 +10,7 @@ class loadAssets extends Phaser.Scene {
             { frameWidth: 32, frameHeight: 48 }
         );
         this.load.spritesheet('boy', 'static/assets/boy.png',
-            { frameWidth: 60, frameHeight: 64 }
+            { frameWidth: 64, frameHeight: 64 }
         );
         this.load.html("form", 'static/form.html');
     }
