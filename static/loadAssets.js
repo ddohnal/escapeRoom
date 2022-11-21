@@ -5,7 +5,7 @@ class loadAssets extends Phaser.Scene {
 
     preload() {
         this.load.image('star', 'static/assets/star.png');
-        this.load.image('box', 'static/assets/box.png')
+        this.load.image('chest', 'static/assets/box.png')
         this.load.spritesheet('dude', 'static/assets/dude.png',
             { frameWidth: 32, frameHeight: 48 }
         );
