@@ -143,7 +143,7 @@ class playGame extends Phaser.Scene {
         this.physics.add.collider(this.player, this.chests);
 
         // Invisible sprite overlap with stars
-        this.physics.add.overlap(this.isWithin, this.chests, this.collectStar, null, this);
+        this.physics.add.overlap(this.isWithin, this.chests, this.showQuestion, null, this);
 
         this.player.setCollideWorldBounds(true);
 
@@ -202,7 +202,7 @@ class playGame extends Phaser.Scene {
         }
     }
 
-    collectStar(player, chest) {
+    showQuestion(player, chest) {
         // Invisible sprite overlap with star, F key need to be pressed to continue interaction
         if (this.interactKey.isDown) {
             var scene = this;
