@@ -2,8 +2,8 @@ const levelsConfig = [
     //level one
     {
         levelID: 1,
-        //array of stars positions
-        stars: [
+        //array of chests positions
+        chests: [
             { x: 250, y: 150, id: 1 },
             { x: 400, y: 150, id: 2 },
             { x: 550, y: 150, id: 3 }
@@ -13,8 +13,8 @@ const levelsConfig = [
     //level two
     {
         levelID: 2,
-        //array of stars positions
-        stars: [
+        //array of chests positions
+        chests: [
             { x: 250, y: 200, id: 1 },
             { x: 300, y: 200, id: 2 },
             { x: 350, y: 200, id: 3 }
@@ -23,8 +23,8 @@ const levelsConfig = [
     //level three
     {
         levelID: 3,
-        //array of stars positions
-        stars: [
+        //array of chests positions
+        chests: [
             { x: 250, y: 250, id: 1 },
             { x: 300, y: 250, id: 2 },
             { x: 350, y: 250, id: 3 }
@@ -63,13 +63,13 @@ class playGame extends Phaser.Scene {
         this.movementText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
         this.interactText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
 
-        this.stars = []
-        for (let starPos of levelsConfig[0].stars) {
-            this.star = this.physics.add.image(starPos.x, starPos.y, 'star')
-            this.star.id = starPos.id
-            this.star.setScale(1.5);
-            this.star.setImmovable();
-            this.stars.push(this.star);
+        this.chests = []
+        for (let starPos of levelsConfig[0].chests) {
+            this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
+            this.chest.id = starPos.id
+            this.chest.setScale(2);
+            this.chest.setImmovable();
+            this.chests.push(this.chest);
         }
 
         // console.log(this.stars);
@@ -140,10 +140,10 @@ class playGame extends Phaser.Scene {
 
     update() {
         // Player collider with stars
-        this.physics.add.collider(this.player, this.stars);
+        this.physics.add.collider(this.player, this.chests);
 
         // Invisible sprite overlap with stars
-        this.physics.add.overlap(this.isWithin, this.stars, this.collectStar, null, this);
+        this.physics.add.overlap(this.isWithin, this.chests, this.collectStar, null, this);
 
         this.player.setCollideWorldBounds(true);
 
@@ -202,16 +202,16 @@ class playGame extends Phaser.Scene {
         }
     }
 
-    collectStar(player, star) {
+    collectStar(player, chest) {
         // Invisible sprite overlap with star, F key need to be pressed to continue interaction
         if (this.interactKey.isDown) {
             var scene = this;
             var socket = this.socket;
 
-            console.log(star.id);
-            console.log(star.x, star.y);
+            console.log(chest.id);
+            console.log(chest.x, chest.y);
 
-            socket.emit('getQuestion', star.id);
+            socket.emit('getQuestion', chest.id);
 
             var element = this.add.dom(400, 600).createFromCache("form");
             element.setPerspective(800);
