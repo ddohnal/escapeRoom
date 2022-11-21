@@ -58,26 +58,27 @@ io.on('connection', function (socket) {
             console.log('Message: ' + questionToAsk + ' sent to player with id:' + socket.id);
 
             console.log('waiting for answer');
-            socket.on('answer', (arg) => {
-                console.log('player answer is: ' + arg);
-                if (players[socket.id].answersFirtLevel[players[socket.id].randomQuestionsFirstLevel[0]] == arg) {
-                    console.log('the player answered correctly');
-                    socket.emit('result', true);
 
-                    console.log('Question removed: ' + players[socket.id].randomQuestionsFirstLevel[0]);
-                    players[socket.id].randomQuestionsFirstLevel.shift();
-                    console.log('Rest of random question: ' + players[socket.id].randomQuestionsFirstLevel);
-
-                    console.log('Chest ID removed: ' + players[socket.id].chestFirstLevelID[0]);
-                    players[socket.id].chestFirstLevelID.shift();
-                    console.log('Rest of chestID to pick up: ' + players[socket.id].chestFirstLevelID);
-                }
-                else {
-                    socket.emit('result', false);
-                }
-            })
         }
 
+    })
+    socket.on('answer', (arg) => {
+        console.log('player answer is: ' + arg);
+        if (players[socket.id].answersFirtLevel[players[socket.id].randomQuestionsFirstLevel[0]] == arg) {
+            console.log('the player answered correctly');
+            socket.emit('result', true);
+
+            console.log('Question removed: ' + players[socket.id].randomQuestionsFirstLevel[0]);
+            players[socket.id].randomQuestionsFirstLevel.shift();
+            console.log('Rest of random question: ' + players[socket.id].randomQuestionsFirstLevel);
+
+            console.log('Chest ID removed: ' + players[socket.id].chestFirstLevelID[0]);
+            players[socket.id].chestFirstLevelID.shift();
+            console.log('Rest of chestID to pick up: ' + players[socket.id].chestFirstLevelID);
+        }
+        else {
+            socket.emit('result', false);
+        }
     })
 })
 
