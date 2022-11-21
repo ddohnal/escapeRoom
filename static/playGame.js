@@ -5,8 +5,8 @@ const levelsConfig = [
         //array of stars positions
         stars: [
             { x: 250, y: 150, id: 1 },
-            { x: 350, y: 150, id: 2 },
-            { x: 450, y: 150, id: 3 }
+            { x: 400, y: 150, id: 2 },
+            { x: 550, y: 150, id: 3 }
         ]
     },
 
@@ -44,12 +44,17 @@ class playGame extends Phaser.Scene {
     create() {
         this.socket = io()
         // Player sprite
-        this.player = this.physics.add.sprite(100, 450, 'dude');
+        this.player = this.physics.add.sprite(450, 450, 'boy');
+        //Resize bounding box
+        this.time.addEvent({ delay: 1000, callback: this.delayDone, callbackScope: this, loop: false })
+
+
+
 
         // Overlap sprite
         this.isWithin = this.physics.add.sprite(100, 450);
-        this.isWithin.displayWidth = 32 * 1.5;
-        this.isWithin.displayHeight = 48 * 1.5;
+        this.isWithin.displayWidth = 60 * 1.2;
+        this.isWithin.displayHeight = 65 * 1.5;
 
         // information text in the upper left corner
         this.style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
@@ -62,6 +67,7 @@ class playGame extends Phaser.Scene {
         for (let starPos of levelsConfig[0].stars) {
             this.star = this.physics.add.image(starPos.x, starPos.y, 'star')
             this.star.id = starPos.id
+            this.star.setScale(1.5);
             this.star.setImmovable();
             this.stars.push(this.star);
         }
@@ -75,39 +81,60 @@ class playGame extends Phaser.Scene {
         this.downKey = this.input.keyboard.addKey('S');
         this.interactKey = this.input.keyboard.addKey('F');
 
-        // Animations
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'up',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
+        // Boy animation
         this.anims.create({
             key: 'down',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frames: this.anims.generateFrameNumbers('boy', { start: 0, end: 3 }),
             frameRate: 10,
             repeat: -1
         });
-
+        this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('boy', { start: 4, end: 7 }),
+            frameRate: 10,
+            repeat: -1
+        });
         this.anims.create({
             key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frames: this.anims.generateFrameNumbers('boy', { start: 8, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'up',
+            frames: this.anims.generateFrameNumbers('boy', { start: 12, end: 15 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
-            key: 'turn',
-            frames: [{ key: 'dude', frame: 4 }],
-            frameRate: 20
+            key: 'downRight',
+            frames: this.anims.generateFrameNumbers('boy', { start: 16, end: 19 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'downLeft',
+            frames: this.anims.generateFrameNumbers('boy', { start: 20, end: 23 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'upLeft',
+            frames: this.anims.generateFrameNumbers('boy', { start: 24, end: 27 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'upRight',
+            frames: this.anims.generateFrameNumbers('boy', { start: 28, end: 31 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'stop',
+            frames: [{ key: 'boy', frame: 0 }],
+            frameRate: 10
         });
     }
 
@@ -121,8 +148,8 @@ class playGame extends Phaser.Scene {
         this.player.setCollideWorldBounds(true);
 
         // Reset player movement if no keybind is pressed
-        this.player.setVelocityX(0);
-        this.player.setVelocityY(0);
+        this.player.body.velocity.x = 0;
+        this.player.body.velocity.y = 0;
 
         // Copying the player's movement
         this.isWithin.x = this.player.x;
@@ -130,28 +157,48 @@ class playGame extends Phaser.Scene {
 
         // Left and right movement
         if (this.leftKey.isDown) {
-            this.player.setVelocityX(-160);
-            this.player.anims.play('left', true);
+            if (this.upKey.isDown) {
+                this.player.setVelocityX(-160);
+                this.player.setVelocityY(-160);
+                this.player.anims.play('upLeft', true);
+            }
+            else if (this.downKey.isDown) {
+                this.player.setVelocityX(-160);
+                this.player.setVelocityY(160);
+                this.player.anims.play('downLeft', true);
+            } else {
+                this.player.setVelocityX(-160)
+                this.player.anims.play('left', true);
+            }
+
         } else if (this.rightKey.isDown) {
-            this.player.setVelocityX(160);
-            this.player.anims.play('right', true);
+            if (this.upKey.isDown) {
+                this.player.setVelocityX(160);
+                this.player.setVelocityY(-160);
+                this.player.anims.play('upRight', true);
+            }
+            else if (this.downKey.isDown) {
+                this.player.setVelocityX(160);
+                this.player.setVelocityY(160);
+                this.player.anims.play('downRight', true);
+            } else {
+                this.player.setVelocityX(160)
+                this.player.anims.play('right', true);
+            }
         } else {
             this.player.setVelocityX(0);
         }
 
-        // Top and down movement
-        if (this.upKey.isDown) {
+        if (this.upKey.isDown && !(this.rightKey.isDown || this.leftKey.isDown)) {
             this.player.setVelocityY(-160);
-            // this.player.anims.play('up', true);
-        } else if (this.downKey.isDown) {
+            this.player.anims.play('up', true);
+        }
+        if (this.downKey.isDown && !(this.rightKey.isDown || this.leftKey.isDown)) {
             this.player.setVelocityY(160);
-            // this.player.anims.play('down', true);
-        } else {
-            this.player.setVelocityY(0);
-
+            this.player.anims.play('down', true);
         }
         if (this.player.body.velocity.x == 0 && this.player.body.velocity.y == 0) {
-            this.player.anims.play('turn', true);
+            this.player.anims.play('stop', true);
         }
     }
 
@@ -249,5 +296,8 @@ class playGame extends Phaser.Scene {
 
         this.input.keyboard.removeCapture(this.interactKey.keyCode);
         this.interactKey.enabled = true;
+    }
+    delayDone() {
+        this.player.body.setSize(this.player.width * 0.6, this.player.height, true);
     }
 }
