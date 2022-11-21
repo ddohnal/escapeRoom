@@ -1,16 +1,16 @@
 {
     "history": [
         {
-            "q": "A small аnd very maneuverable ship with sails, used by Spaniards and Portuguese in XV-XVI.",
-            "a": "caravel"
+            "q": "2+2=?",
+            "a": "4"
         },
         {
-            "q": "The greatest value of this political doctrine is freedom.",
-            "a": "caravel"
+            "q": "3+3=?",
+            "a": "6"
         },
         {
-            "q": "Document sold by the Catholic Church for the remission of sins.",
-            "a": "caravel"
+            "q": "4+4=?",
+            "a": "8"
         }
     ],
     "geography": [
