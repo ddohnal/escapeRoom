@@ -37,18 +37,18 @@ class playGame extends Phaser.Scene {
         super('playGame');
 
         this.player;
-        this.question;
-        this.stars;
+        this.form;
+
+
     }
 
     create() {
         this.socket = io()
+
         // Player sprite
         this.player = this.physics.add.sprite(450, 450, 'boy');
         //Resize bounding box
         this.time.addEvent({ delay: 1000, callback: this.delayDone, callbackScope: this, loop: false })
-
-
 
 
         // Overlap sprite
@@ -136,6 +136,13 @@ class playGame extends Phaser.Scene {
             frames: [{ key: 'boy', frame: 0 }],
             frameRate: 10
         });
+        // form sockets
+        this.socket.on('questionToAsk', (question) => this.showQuestion(question, this.socket));
+        this.socket.on('result', (result) => this.showResult(result));
+        this.socket.on('incorrect chest', (message) => this.inCorrectChest(message));
+
+
+
     }
 
     update() {
@@ -143,7 +150,7 @@ class playGame extends Phaser.Scene {
         this.physics.add.collider(this.player, this.chests);
 
         // Invisible sprite overlap with stars
-        this.physics.add.overlap(this.isWithin, this.chests, this.showQuestion, null, this);
+        this.physics.add.overlap(this.isWithin, this.chests, this.chestOverlap, null, this);
 
         this.player.setCollideWorldBounds(true);
 
@@ -202,59 +209,56 @@ class playGame extends Phaser.Scene {
         }
     }
 
-    showQuestion(player, chest) {
-        // Invisible sprite overlap with star, F key need to be pressed to continue interaction
+
+
+
+    chestOverlap(player, chest) {
+        // send chestID to the server
         if (this.interactKey.isDown) {
-            var scene = this;
-            var socket = this.socket;
-
-            console.log(chest.id);
-            console.log(chest.x, chest.y);
-
-            socket.emit('getQuestion', chest.id);
-
-            var element = this.add.dom(400, 600).createFromCache("form");
-            element.setPerspective(800);
-            element.addListener("click");
-
-            scene.disableInput();
-
-            socket.on('questionToAsk', (arg) => {
-                document.getElementById('question').innerHTML = arg;
-            });
-
-            element.on("click", function (event) {
-                if (event.target.name === "sendAnswer") {
-                    var answer = this.getChildByName("answer");
-                    // console.log(answer.value);
-                    socket.emit('answer', answer.value);
-
-                    //  Have they entered anything?
-                    if (answer.value !== '' && answer.value !== '') {
-                        //  Turn off the click events
-                        this.removeListener("click");
-                        // this.scene.tweens.add({ targets: element.rotate3d, x: 1, w: 90, duration: 3000, ease: 'Power3' });
-                    }
-                    socket.on('result', (arg) => {
-                        if (arg) {
-                            console.log('correct answer');
-                        }
-                        else {
-                            console.log('wrong answer');
-                        }
-
-                        scene.enableInput();
-                        element.destroy();
-                    })
-                }
-            });
-            this.tweens.add({
-                targets: element,
-                y: 300,
-                duration: 3000,
-                ease: 'Power3'
-            });
+            this.disableInput();
+            console.log('Chest id: ' + chest.id);
+            this.socket.emit('getQuestion', chest.id);
         }
+    }
+    showQuestion(question, socket) {
+        // create new form with the question
+        // register click event 
+        // during the click, send answer to the server and destroy form       
+        var socket = this.socket;
+        var scene = this;
+        console.log(question);
+
+        var form = this.add.dom(400, 600).createFromCache("form");
+        document.getElementById('q').innerHTML = question;
+        form.addListener("click");
+
+        form.on("click", function (event) {
+            if (event.target.name === "sendAnswer") {
+                var answer = this.getChildByName("answer");
+                // console.log(answer.value);
+                console.log(answer.value);
+                socket.emit('answer', answer.value);
+                scene.enableInput();
+                form.destroy();
+            }
+        }
+        )
+
+    }
+    showResult(result) {
+        // inform user about the result
+        if (result) {
+            console.log('correct answer');
+        }
+        else {
+            console.log('wrong answer');
+        }
+        this.enableInput();
+    }
+    inCorrectChest(message) {
+        this.enableInput();
+        console.log('incorrect chest!');
+
     }
 
     disableInput() {
