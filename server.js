@@ -49,7 +49,7 @@ io.on('connection', function (socket) {
     }
     socket.on('getQuestion', (arg) => {
         console.log('*****************************************');
-        console.log('player: ' + socket.id + ' -> message: ' + arg);
+        console.log('PLAYER WITH ID -- ' + socket.id + '-- ASK A QUESTION. CHEST ID: ' + arg);
 
         //check if chest.id is equal of chestFirstLevel[0]
         if (arg == players[socket.id].chestFirstLevelID[0]) {
@@ -59,6 +59,9 @@ io.on('connection', function (socket) {
 
             console.log('waiting for answer');
 
+        }
+        else {
+            socket.emit('incorrect chest', 'This item is not available');
         }
 
     })
