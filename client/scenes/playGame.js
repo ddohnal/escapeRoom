@@ -42,12 +42,12 @@ class playGame extends Phaser.Scene {
     create() {
         this.socket = io()
 
-        // Player sprite
+        // player sprite
         this.player = this.physics.add.sprite(450, 450, 'boy');
-        //Resize bounding box
+        // resize bounding box
         this.time.addEvent({ delay: 1000, callback: this.delayDone, callbackScope: this, loop: false })
 
-        // Overlap sprite
+        // overlap sprite
         this.isWithin = this.physics.add.sprite(100, 450);
         this.isWithin.displayWidth = 60 * 1.2;
         this.isWithin.displayHeight = 65 * 1.5;
@@ -68,16 +68,14 @@ class playGame extends Phaser.Scene {
             this.chests.push(this.chest);
         }
 
-        // console.log(this.stars);
-
-        // Keybinding
+        // keybindings
         this.leftKey = this.input.keyboard.addKey('A');
         this.rightKey = this.input.keyboard.addKey('D');
         this.upKey = this.input.keyboard.addKey('W');
         this.downKey = this.input.keyboard.addKey('S');
         this.interactKey = this.input.keyboard.addKey('F');
 
-        // Boy animation
+        // sprite animation
         this.anims.create({
             key: 'down',
             frames: this.anims.generateFrameNumbers('boy', { start: 0, end: 3 }),
@@ -133,29 +131,29 @@ class playGame extends Phaser.Scene {
         });
 
         // form sockets
-        this.socket.on('questionToAsk', (question) => this.showQuestion(question, this.socket));
+        this.socket.on('questionToAsk', (question) => this.showQuestion(question));
         this.socket.on('result', (result) => this.showResult(result));
         this.socket.on('incorrect chest', (message) => this.inCorrectChest(message));
     }
 
     update() {
-        // Player collider with stars
+        // player collider with chests
         this.physics.add.collider(this.player, this.chests);
 
-        // Invisible sprite overlap with stars
+        // invisible sprite overlap with stars
         this.physics.add.overlap(this.isWithin, this.chests, this.chestOverlap, null, this);
 
         this.player.setCollideWorldBounds(true);
 
-        // Reset player movement if no keybind is pressed
+        // reset player movement if no keybind is pressed
         this.player.body.velocity.x = 0;
         this.player.body.velocity.y = 0;
 
-        // Copying the player's movement
+        // copying the player's movement
         this.isWithin.x = this.player.x;
         this.isWithin.y = this.player.y;
 
-        // Left and right movement
+        // player movement
         if (this.leftKey.isDown) {
             if (this.upKey.isDown) {
                 this.player.setVelocityX(-160);
