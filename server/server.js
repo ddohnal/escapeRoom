@@ -15,10 +15,9 @@ var players = {}
 var questionToAsk;
 
 app.set('port', 5000)
-app.use('/static', express.static(__dirname + '/static'))
-
+app.use('/client', express.static(__dirname + '../../client'))
 app.get('/', function (request, response) {
-    response.sendFile(path.join(__dirname, 'index.html'))
+    response.sendFile(path.join(__dirname, '../client/index.html'))
 })
 
 io.on('connection', function (socket) {

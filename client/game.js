@@ -4,7 +4,6 @@ window.onload = function () {
 
     let config = {
         type: Phaser.AUTO,
-        parent: 'phaser-example',
         width: 1920,
         height: 1080,
         backgroundColor: '#D5A459',

@@ -37,9 +37,6 @@ class playGame extends Phaser.Scene {
         super('playGame');
 
         this.player;
-        this.form;
-
-
     }
 
     create() {
@@ -49,7 +46,6 @@ class playGame extends Phaser.Scene {
         this.player = this.physics.add.sprite(450, 450, 'boy');
         //Resize bounding box
         this.time.addEvent({ delay: 1000, callback: this.delayDone, callbackScope: this, loop: false })
-
 
         // Overlap sprite
         this.isWithin = this.physics.add.sprite(100, 450);
@@ -106,7 +102,6 @@ class playGame extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-
         this.anims.create({
             key: 'downRight',
             frames: this.anims.generateFrameNumbers('boy', { start: 16, end: 19 }),
@@ -136,13 +131,11 @@ class playGame extends Phaser.Scene {
             frames: [{ key: 'boy', frame: 0 }],
             frameRate: 10
         });
+
         // form sockets
         this.socket.on('questionToAsk', (question) => this.showQuestion(question, this.socket));
         this.socket.on('result', (result) => this.showResult(result));
         this.socket.on('incorrect chest', (message) => this.inCorrectChest(message));
-
-
-
     }
 
     update() {
@@ -177,7 +170,6 @@ class playGame extends Phaser.Scene {
                 this.player.setVelocityX(-160)
                 this.player.anims.play('left', true);
             }
-
         } else if (this.rightKey.isDown) {
             if (this.upKey.isDown) {
                 this.player.setVelocityX(160);
@@ -204,13 +196,10 @@ class playGame extends Phaser.Scene {
             this.player.setVelocityY(160);
             this.player.anims.play('down', true);
         }
-        if (this.player.body.velocity.x == 0 && this.player.body.velocity.y == 0) {
+        if (this.player.body.velocity.x === 0 && this.player.body.velocity.y === 0) {
             this.player.anims.play('stop', true);
         }
     }
-
-
-
 
     chestOverlap(player, chest) {
         // send chestID to the server
@@ -220,10 +209,7 @@ class playGame extends Phaser.Scene {
             this.socket.emit('getQuestion', chest.id);
         }
     }
-    showQuestion(question, socket) {
-        // create new form with the question
-        // register click event 
-        // during the click, send answer to the server and destroy form       
+    showQuestion(question) {
         var socket = this.socket;
         var scene = this;
         console.log(question);
@@ -241,20 +227,19 @@ class playGame extends Phaser.Scene {
                 scene.enableInput();
                 form.destroy();
             }
-        }
-        )
-
+        })
     }
+
     showResult(result) {
         // inform user about the result
         if (result) {
             console.log('correct answer');
-        }
-        else {
+        } else {
             console.log('wrong answer');
         }
         this.enableInput();
     }
+
     inCorrectChest(message) {
         this.enableInput();
         console.log('incorrect chest!');
@@ -301,6 +286,7 @@ class playGame extends Phaser.Scene {
         this.input.keyboard.removeCapture(this.interactKey.keyCode);
         this.interactKey.enabled = true;
     }
+
     delayDone() {
         this.player.body.setSize(this.player.width * 0.6, this.player.height, true);
     }
