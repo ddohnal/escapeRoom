@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-let rawQuestions = fs.readFileSync('questions.json');
+let rawQuestions = fs.readFileSync('server/questions.json');
 let questions = JSON.parse(rawQuestions);
 
 //extract questions from questions.json
