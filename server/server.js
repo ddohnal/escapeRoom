@@ -21,7 +21,7 @@ app.get('/', function (request, response) {
 })
 
 io.on('connection', function (socket) {
-    console.log('player [' + socket.id + '] connected')
+    console.log('=>[received][%s]: connected', socket.id);
 
     players[socket.id] = {
         //first level params
@@ -44,43 +44,43 @@ io.on('connection', function (socket) {
         answersThirdLevel: mathA,
         randomQuestionsThirdLevel: Array.from(Array(mathQ.length).keys()).sort((a, b) => 0.5 - Math.random()),
         chestThirdLevelID: [1, 2, 3, 4],
-
     }
+
     socket.on('getQuestion', (arg) => {
-        console.log('*****************************************');
-        console.log('PLAYER WITH ID -- ' + socket.id + '-- ASK A QUESTION. CHEST ID: ' + arg);
+        console.log('=>[received][%s]: asked question for chest %s', socket.id, arg);
 
         //check if chest.id is equal of chestFirstLevel[0]
-        if (arg == players[socket.id].chestFirstLevelID[0]) {
+        if (arg === players[socket.id].chestFirstLevelID[0]) {
             questionToAsk = players[socket.id].questionsFirstLevel[players[socket.id].randomQuestionsFirstLevel[0]];
             socket.emit('questionToAsk', questionToAsk);
-            console.log('Message: ' + questionToAsk + ' sent to player with id:' + socket.id);
-
-            console.log('waiting for answer');
-
-        }
-        else {
+            console.log('<=[sent][%s]: question "%s"', socket.id, questionToAsk);
+        } else {
             socket.emit('incorrect chest', 'This item is not available');
+            console.log('<=[sent][%s]: this item is not available', socket.id);
         }
-
     })
+
     socket.on('answer', (arg) => {
-        console.log('player answer is: ' + arg);
-        if (players[socket.id].answersFirtLevel[players[socket.id].randomQuestionsFirstLevel[0]] == arg) {
-            console.log('the player answered correctly');
-            socket.emit('result', true);
+        console.log('=>[received][%s]: answer "%s"', socket.id, arg);
 
-            console.log('Question removed: ' + players[socket.id].randomQuestionsFirstLevel[0]);
+        if (players[socket.id].answersFirtLevel[players[socket.id].randomQuestionsFirstLevel[0]] === arg) {
+
+            let chest = players[socket.id].chestFirstLevelID[0];
+
             players[socket.id].randomQuestionsFirstLevel.shift();
-            console.log('Rest of random question: ' + players[socket.id].randomQuestionsFirstLevel);
-
-            console.log('Chest ID removed: ' + players[socket.id].chestFirstLevelID[0]);
             players[socket.id].chestFirstLevelID.shift();
-            console.log('Rest of chestID to pick up: ' + players[socket.id].chestFirstLevelID);
-        }
-        else {
+
+            socket.emit('result', true);
+            console.log('<=[sent][%s]: correct, chest %s removed, remaining %s', socket.id, chest, players[socket.id].chestFirstLevelID);
+        } else {
             socket.emit('result', false);
+            console.log('<=[sent][%s]: incorrect', socket.id);
         }
+    })
+
+    socket.on('disconnect', () => {
+        console.log('=>[received][%s]: disconnected', socket.id);
+        delete players[socket.id];
     })
 })
 
