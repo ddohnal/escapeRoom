@@ -13,6 +13,7 @@ class loadAssets extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 64 }
         );
         this.load.html("form", 'client/assets/forms/form.html');
+        this.load.html("formInvalid", 'client/assets/forms/formInvalid.html');
     }
 
     create() {

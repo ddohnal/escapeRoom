@@ -239,7 +239,18 @@ class playGame extends Phaser.Scene {
     }
 
     inCorrectChest(message) {
-        this.enableInput();
+        var scene = this;
+        var form = this.add.dom(400, 600).createFromCache("formInvalid");
+        form.addListener("click");
+
+        form.on("click", function (event) {
+            if (event.target.name === "sendAnswer") {
+
+                scene.enableInput();
+                form.destroy();
+            }
+        })
+
         console.log('incorrect chest!');
 
     }
