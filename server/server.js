@@ -20,9 +20,7 @@ var questionToAsk;
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Our app is running on port ${PORT}`)
-})
+
 app.use('/client', express.static(__dirname + '../../client'))
 app.get('/', function (request, response) {
     response.sendFile(path.join(__dirname, '../client/index.html'))
@@ -92,8 +90,8 @@ io.on('connection', function (socket) {
     })
 })
 
-server.listen(5000, function () {
-    console.log('Starting server on port 5000')
+server.listen(PORT, function () {
+    console.log(`Our app is running on port ${PORT}`)
 })
 
 
