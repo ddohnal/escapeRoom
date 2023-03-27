@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const http = require('http');
 const path = require('path');
@@ -14,7 +18,11 @@ var io = socketIO(server, {
 var players = {}
 var questionToAsk;
 
-app.set('port', 5000)
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Our app is running on port ${PORT}`)
+})
 app.use('/client', express.static(__dirname + '../../client'))
 app.get('/', function (request, response) {
     response.sendFile(path.join(__dirname, '../client/index.html'))
