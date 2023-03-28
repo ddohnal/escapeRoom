@@ -42,6 +42,24 @@ class playGame extends Phaser.Scene {
     create() {
         this.socket = io()
 
+
+
+        //tilesmap
+        const map = this.make.tilemap({ key: "map", tileWidth: 30, tileHeight: 30 });
+        const tileset = map.addTilesetImage("tiles1", "tiles");
+        const layer = map.createLayer("topLayer", tileset, 0, 0);
+
+        // information text in the upper left corner
+        this.style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        this.movementText = this.add.text(0, 0, "Movement keys: W,A,S,D", this.style);
+        this.interactText = this.add.text(0, 50, "Interact key: F", this.style)
+        this.movementText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+        this.interactText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+
+        //hp bar
+        this.healthBar = this.makeBar(140, 100, 0x2ecc71);
+        this.setValue(this.healthBar, 100);
+
         // player sprite
         this.player = this.physics.add.sprite(450, 450, 'boy');
         // resize bounding box
@@ -51,13 +69,6 @@ class playGame extends Phaser.Scene {
         this.isWithin = this.physics.add.sprite(100, 450);
         this.isWithin.displayWidth = 60 * 1.2;
         this.isWithin.displayHeight = 65 * 1.5;
-
-        // information text in the upper left corner
-        this.style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-        this.movementText = this.add.text(0, 0, "Movement keys: W,A,S,D", this.style);
-        this.interactText = this.add.text(0, 50, "Interact key: F", this.style)
-        this.movementText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
-        this.interactText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
 
         this.chests = []
         for (let starPos of levelsConfig[0].chests) {
@@ -232,8 +243,10 @@ class playGame extends Phaser.Scene {
         // inform user about the result
         if (result) {
             console.log('correct answer');
+
         } else {
             console.log('wrong answer');
+            this.setValue(this.healthBar, 50);
         }
         this.enableInput();
     }
@@ -299,4 +312,30 @@ class playGame extends Phaser.Scene {
     delayDone() {
         this.player.body.setSize(this.player.width * 0.6, this.player.height, true);
     }
+
+    makeBar(x, y, color) {
+        //draw the bar
+        let bar = this.add.graphics();
+
+        //color the bar
+        bar.fillStyle(color, 1);
+
+        //fill the bar with a rectangle
+        bar.fillRect(0, 0, 200, 50);
+
+        //position the bar
+        bar.x = x;
+        bar.y = y;
+
+        //return the bar
+        return bar;
+    }
+
+    setValue(bar, percentage) {
+        //scale the bar
+        bar.scaleX = percentage / 100;
+    }
+
+
+
 }

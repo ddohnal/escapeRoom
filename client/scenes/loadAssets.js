@@ -14,6 +14,9 @@ class loadAssets extends Phaser.Scene {
         );
         this.load.html("form", 'client/assets/forms/form.html');
         this.load.html("formInvalid", 'client/assets/forms/formInvalid.html');
+
+        this.load.image("tiles", "client/assets/tilesmap/tiles/escape_room.png");
+        this.load.tilemapTiledJSON('map', "client/assets/tilesmap/json/map1.json");
     }
 
     create() {
