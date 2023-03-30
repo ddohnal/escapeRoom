@@ -56,8 +56,8 @@ class playGame extends Phaser.Scene {
         //tilesmap
         const map = this.make.tilemap({ key: "map", tileWidth: 30, tileHeight: 30 });
         const tileset = map.addTilesetImage("tiles1", "tiles");
-        this.groundLayer = map.createLayer("Ground", tileset, 100, 50);
-        this.wallsLayer = map.createLayer("Walls", tileset, 100, 50);
+        this.groundLayer = map.createLayer("Ground", tileset, 0, 0);
+        this.wallsLayer = map.createLayer("Walls", tileset, 0, 0);
 
         //enviroment collides setup
         this.wallsLayer.setCollisionByProperty({ collides: true });
