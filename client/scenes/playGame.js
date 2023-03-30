@@ -47,18 +47,31 @@ class playGame extends Phaser.Scene {
         //tilesmap
         const map = this.make.tilemap({ key: "map", tileWidth: 30, tileHeight: 30 });
         const tileset = map.addTilesetImage("tiles1", "tiles");
-        const layer = map.createLayer("topLayer", tileset, 0, 0);
+        this.groundLayer = map.createLayer("Ground", tileset, 0, 0);
+        this.wallsLayer = map.createLayer("Walls", tileset, 0, 0);
 
+        //enviroment collides setup
+        this.wallsLayer.setCollisionByProperty({ collides: true });
+
+        //heart
+        this.hearts = this.add.group();
+        this.hearts.createMultiple({
+            key: 'ui-heart-full',
+            setXY: {
+                x: 20,
+                y: 20,
+                stepX: 60
+            },
+            quantity: 3
+        })
+        // this.hearts.setScale(2);
+        this.hearts.scaleXY(1.5, 1.5);
         // information text in the upper left corner
-        this.style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-        this.movementText = this.add.text(0, 0, "Movement keys: W,A,S,D", this.style);
-        this.interactText = this.add.text(0, 50, "Interact key: F", this.style)
+        this.style = { font: "bold 20px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        this.movementText = this.add.text(0, 50, "Movement keys: W,A,S,D", this.style);
+        this.interactText = this.add.text(0, 100, "Interact key: F", this.style)
         this.movementText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
         this.interactText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
-
-        //hp bar
-        this.healthBar = this.makeBar(140, 100, 0x2ecc71);
-        this.setValue(this.healthBar, 100);
 
         // player sprite
         this.player = this.physics.add.sprite(450, 450, 'boy');
@@ -150,6 +163,7 @@ class playGame extends Phaser.Scene {
     update() {
         // player collider with chests
         this.physics.add.collider(this.player, this.chests);
+        this.physics.add.collider(this.player, this.wallsLayer);
 
         // invisible sprite overlap with stars
         this.physics.add.overlap(this.isWithin, this.chests, this.chestOverlap, null, this);
@@ -313,28 +327,7 @@ class playGame extends Phaser.Scene {
         this.player.body.setSize(this.player.width * 0.6, this.player.height, true);
     }
 
-    makeBar(x, y, color) {
-        //draw the bar
-        let bar = this.add.graphics();
 
-        //color the bar
-        bar.fillStyle(color, 1);
-
-        //fill the bar with a rectangle
-        bar.fillRect(0, 0, 200, 50);
-
-        //position the bar
-        bar.x = x;
-        bar.y = y;
-
-        //return the bar
-        return bar;
-    }
-
-    setValue(bar, percentage) {
-        //scale the bar
-        bar.scaleX = percentage / 100;
-    }
 
 
 

@@ -5,7 +5,12 @@ class loadAssets extends Phaser.Scene {
 
     preload() {
         this.load.image('star', 'client/assets/images/star.png');
-        this.load.image('chest', 'client/assets/images/box.png')
+        this.load.image('chest', 'client/assets/images/box.png');
+
+        this.load.image('ui-heart-empty', 'client/assets/images/ui_heart_empty.png');
+        this.load.image('ui-heart-full', 'client/assets/images/ui_heart_full.png');
+
+
         this.load.spritesheet('dude', 'client/assets/images/dude.png',
             { frameWidth: 32, frameHeight: 48 }
         );
@@ -17,6 +22,7 @@ class loadAssets extends Phaser.Scene {
 
         this.load.image("tiles", "client/assets/tilesmap/tiles/escape_room.png");
         this.load.tilemapTiledJSON('map', "client/assets/tilesmap/json/map1.json");
+
     }
 
     create() {

@@ -6,7 +6,7 @@ window.onload = function () {
         type: Phaser.AUTO,
         width: 1920,
         height: 1080,
-        backgroundColor: '#D5A459',
+
         physics: {
             default: 'arcade',
             arcade: {
