@@ -4,8 +4,9 @@ window.onload = function () {
 
     let config = {
         type: Phaser.AUTO,
-        width: 1920,
-        height: 1080,
+
+        backgroundColor: '#000',
+
 
         physics: {
             default: 'arcade',

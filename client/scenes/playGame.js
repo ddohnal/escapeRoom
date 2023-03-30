@@ -4,9 +4,9 @@ const levelsConfig = [
         levelID: 1,
         //array of chests positions
         chests: [
-            { x: 250, y: 150, id: 1 },
-            { x: 400, y: 150, id: 2 },
-            { x: 550, y: 150, id: 3 }
+            { x: 250, y: 200, id: 1 },
+            { x: 400, y: 200, id: 2 },
+            { x: 550, y: 200, id: 3 }
         ]
     },
 
@@ -37,6 +37,8 @@ class playGame extends Phaser.Scene {
         super('playGame');
 
         this.player;
+        this.timedEvent;
+
     }
 
     create() {
@@ -44,37 +46,52 @@ class playGame extends Phaser.Scene {
 
 
 
+        this.health = 3;
+        this.gameOver = false;
+
+        console.log(this.health);
+
+
+
         //tilesmap
         const map = this.make.tilemap({ key: "map", tileWidth: 30, tileHeight: 30 });
         const tileset = map.addTilesetImage("tiles1", "tiles");
-        this.groundLayer = map.createLayer("Ground", tileset, 0, 0);
-        this.wallsLayer = map.createLayer("Walls", tileset, 0, 0);
+        this.groundLayer = map.createLayer("Ground", tileset, 100, 50);
+        this.wallsLayer = map.createLayer("Walls", tileset, 100, 50);
 
         //enviroment collides setup
         this.wallsLayer.setCollisionByProperty({ collides: true });
 
         //heart
-        this.hearts = this.add.group();
-        this.hearts.createMultiple({
-            key: 'ui-heart-full',
-            setXY: {
-                x: 20,
-                y: 20,
-                stepX: 60
-            },
-            quantity: 3
-        })
-        // this.hearts.setScale(2);
-        this.hearts.scaleXY(1.5, 1.5);
+        // this.hearts = this.add.group();
+        // this.hearts.createMultiple({
+        //     key: 'ui-heart-full',
+        //     setXY: {
+        //         x: 20,
+        //         y: 20,
+        //         stepX: 60
+        //     },
+        //     quantity: 3
+        // })
+
+        // this.hearts.scaleXY(1.5, 1.5);
+
+
+        this.style = { font: "bold 12px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        //hp text
+        this.hpText = this.add.text(0, 50, "HP: " + this.health, this.style);
+
         // information text in the upper left corner
-        this.style = { font: "bold 20px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-        this.movementText = this.add.text(0, 50, "Movement keys: W,A,S,D", this.style);
-        this.interactText = this.add.text(0, 100, "Interact key: F", this.style)
+
+        this.movementText = this.add.text(0, 100, "Movement keys: W,A,S,D", this.style);
+        this.interactText = this.add.text(0, 150, "Interact key: F", this.style)
         this.movementText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
         this.interactText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
 
+
+
         // player sprite
-        this.player = this.physics.add.sprite(450, 450, 'boy');
+        this.player = this.physics.add.sprite(200, 200, 'boy');
         // resize bounding box
         this.time.addEvent({ delay: 1000, callback: this.delayDone, callbackScope: this, loop: false })
 
@@ -158,6 +175,18 @@ class playGame extends Phaser.Scene {
         this.socket.on('questionToAsk', (question) => this.showQuestion(question));
         this.socket.on('result', (result) => this.showResult(result));
         this.socket.on('incorrect chest', (message) => this.inCorrectChest(message));
+
+        //game over text
+        this.gameOverText = this.add.text(this.player.x, this.player.y, 'Game Over', { fontSize: '64px', fill: '#FFF' });
+        // this.gameOverText.setOrigin(0.5);
+        this.gameOverText.visible = false;
+
+        // this.cameras.main.startFollow(this.player);
+
+        // this.cameras.main.ignore([this.movementText, this.interactKey, this.hearts]);
+
+        // const UICam = this.cameras.add(0, 0, 800, 600);
+        // UICam.ignore(this.player);
     }
 
     update() {
@@ -222,6 +251,9 @@ class playGame extends Phaser.Scene {
         if (this.player.body.velocity.x === 0 && this.player.body.velocity.y === 0) {
             this.player.anims.play('stop', true);
         }
+
+        //hp text update
+        this.hpText.setText("HP: " + this.health);
     }
 
     chestOverlap(player, chest) {
@@ -237,7 +269,7 @@ class playGame extends Phaser.Scene {
         var scene = this;
         console.log(question);
 
-        var form = this.add.dom(400, 600).createFromCache("form");
+        var form = this.add.dom(this.player.x - 200, this.player.y - 200).createFromCache("form");
         document.getElementById('q').innerHTML = question;
         form.addListener("click");
 
@@ -254,20 +286,39 @@ class playGame extends Phaser.Scene {
     }
 
     showResult(result) {
-        // inform user about the result
+        // inform user about the result 
+
         if (result) {
             console.log('correct answer');
 
         } else {
             console.log('wrong answer');
-            this.setValue(this.healthBar, 50);
+            this.health -= 1;
+            // change heart imgae
+
+            //game over when hp ==0
+
+            if (this.health <= 0) {
+                this.gameOver = true;
+                this.gameOverText.visible = true;
+
+                setTimeout(() => {
+                    this.scene.restart();
+                }, 5000)
+
+
+                //reload scene
+                //this.scene.restart();
+
+            }
+            console.log(this.health);
         }
         this.enableInput();
     }
 
     inCorrectChest(message) {
         var scene = this;
-        var form = this.add.dom(400, 600).createFromCache("formInvalid");
+        var form = this.add.dom(this.player.x - 200, this.player.y - 200).createFromCache("formInvalid");
         form.addListener("click");
 
         form.on("click", function (event) {
@@ -326,6 +377,8 @@ class playGame extends Phaser.Scene {
     delayDone() {
         this.player.body.setSize(this.player.width * 0.6, this.player.height, true);
     }
+
+
 
 
 

@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8"/>
-        <title>Escape Room</title>
-        <style type="text/css">
-            body {
-                margin: 0
-            }
-    
-            canvas {
-                border: 2px solid gray;
-            }
-        </style>
-    </head>
-    <body>
-        <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-        
-        <script src="/client/scenes/loadAssets.js"></script>
-        <script src="/client/scenes/playGame.js"></script>
-        <script src="/client/game.js"></script>
 
-        <div id="show-form"></div>
-    </body>
+<head>
+    <meta charset="utf-8" />
+    <title>Escape Room</title>
+    <style type="text/css">
+        body {
+            margin: 0
+        }
+
+        /* canvas {
+            border: 2px solid gray;
+        } */
+
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="/client/scenes/loadAssets.js"></script>
+    <script src="/client/scenes/playGame.js"></script>
+    <script src="/client/game.js"></script>
+
+    <div id="show-form"></div>
+</body>
+
 </html>
