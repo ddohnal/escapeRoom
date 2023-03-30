@@ -80,13 +80,22 @@ class playGame extends Phaser.Scene {
         this.style = { font: "bold 12px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
         //hp text
         this.hpText = this.add.text(0, 50, "HP: " + this.health, this.style);
-
+        this.hpText.scrollFactorX = 0
+        this.hpText.scrollFactorY = 0
         // information text in the upper left corner
 
         this.movementText = this.add.text(0, 100, "Movement keys: W,A,S,D", this.style);
-        this.interactText = this.add.text(0, 150, "Interact key: F", this.style)
         this.movementText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+        this.movementText.scrollFactorX = 0
+        this.movementText.scrollFactorY = 0
+
+
+        this.interactText = this.add.text(0, 150, "Interact key: F", this.style)
         this.interactText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+        this.interactText.scrollFactorX = 0
+        this.interactText.scrollFactorY = 0
+
+
 
 
 
@@ -181,7 +190,7 @@ class playGame extends Phaser.Scene {
         // this.gameOverText.setOrigin(0.5);
         this.gameOverText.visible = false;
 
-        // this.cameras.main.startFollow(this.player);
+        this.cameras.main.startFollow(this.player);
 
         // this.cameras.main.ignore([this.movementText, this.interactKey, this.hearts]);
 
