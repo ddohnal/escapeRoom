@@ -196,6 +196,17 @@ class playGame extends Phaser.Scene {
 
         // const UICam = this.cameras.add(0, 0, 800, 600);
         // UICam.ignore(this.player);
+
+        this.lights.enable();
+        this.lights.setAmbientColor(0x808080);
+
+        this.light = this.lights.addLight(this.player.x, this.player.y, 150).setColor(0xFFFFFF).setIntensity(1);
+
+
+
+        this.player.setPipeline('Light2D');
+        this.groundLayer.setPipeline('Light2D');
+        this.wallsLayer.setPipeline('Light2D');
     }
 
     update() {
@@ -263,6 +274,10 @@ class playGame extends Phaser.Scene {
 
         //hp text update
         this.hpText.setText("HP: " + this.health);
+
+        //light
+        this.light.x = this.player.x;
+        this.light.y = this.player.y;
     }
 
     chestOverlap(player, chest) {
@@ -386,11 +401,4 @@ class playGame extends Phaser.Scene {
     delayDone() {
         this.player.body.setSize(this.player.width * 0.6, this.player.height, true);
     }
-
-
-
-
-
-
-
 }

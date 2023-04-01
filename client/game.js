@@ -15,6 +15,7 @@ window.onload = function () {
                 debug: false
             }
         },
+
         scene: [
             loadAssets,
             playGame
