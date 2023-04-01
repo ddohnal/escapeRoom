@@ -197,13 +197,13 @@ class playGame extends Phaser.Scene {
         // const UICam = this.cameras.add(0, 0, 800, 600);
         // UICam.ignore(this.player);
 
+
+        // light
         this.lights.enable();
         this.lights.setAmbientColor(0x808080);
-
         this.light = this.lights.addLight(this.player.x, this.player.y, 150).setColor(0xFFFFFF).setIntensity(1);
 
-
-
+        // light affect object
         this.player.setPipeline('Light2D');
         this.groundLayer.setPipeline('Light2D');
         this.wallsLayer.setPipeline('Light2D');
