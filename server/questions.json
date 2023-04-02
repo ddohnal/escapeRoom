@@ -15,30 +15,30 @@
     ],
     "geography": [
         {
-            "q": "How many time zones is the territory of China?",
-            "a": "4"
+            "q": "2-2",
+            "a": "0"
         },
         {
-            "q": "Bohemian Paradise is one of the natural landmarks of the Czech Republic, what is the origin of the rocks that make up the area? ",
-            "a": "Sedimentary"
+            "q": "3-2",
+            "a": "1"
         },
         {
-            "q": "What is the average temperature in the Pampas? (in celsius)",
-            "a": "18"
+            "q": "4-2",
+            "a": "2"
         }
     ],
     "math": [
         {
-            "q": "The Bulgarian athletes at the Beijing 2022 Winter Olympics are 16. Two of them must be chosen as flag bearers at the opening ceremony. How many ways can this happen?",
-            "a": "120"
+            "q": "2*2",
+            "a": "4"
         },
         {
-            "q": "Plamen and Ivo go down a 4 km long ski slope. At the end of the track it turned out that Plamen arrived 2 minutes after Ivo. In how many minutes did Plamen descend if the two of them started at the same time from the beginning of the track and Ivo was moving 4 km / h faster than him?",
-            "a": "12"
+            "q": "3*3",
+            "a": "9"
         },
         {
-            "q": "Two workers had to put window frames on a hotel. The first worker can install the joinery twice as fast as the second. The two workers started to install the joinery together, but after 4 days the second worker had to move to another site and so the first worker finished the rest of the work in the hotel for 3 days. Find out in how many days the second worker can install the joinery himself.",
-            "a": "18"
+            "q": "4*4",
+            "a": "16"
         }
     ]
 }

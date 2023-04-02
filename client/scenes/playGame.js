@@ -4,9 +4,9 @@ const levelsConfig = [
         levelID: 1,
         //array of chests positions
         chests: [
-            { x: 250, y: 200, id: 1 },
-            { x: 400, y: 200, id: 2 },
-            { x: 550, y: 200, id: 3 }
+            { x: 250, y: 100, id: 1 },
+            { x: 400, y: 100, id: 2 },
+            { x: 550, y: 100, id: 3 }
         ]
     },
 
@@ -15,9 +15,9 @@ const levelsConfig = [
         levelID: 2,
         //array of chests positions
         chests: [
-            { x: 250, y: 200, id: 1 },
-            { x: 300, y: 200, id: 2 },
-            { x: 350, y: 200, id: 3 }
+            { x: 250, y: 200, id: 4 },
+            { x: 400, y: 200, id: 5 },
+            { x: 550, y: 200, id: 6 }
         ]
     },
     //level three
@@ -25,9 +25,9 @@ const levelsConfig = [
         levelID: 3,
         //array of chests positions
         chests: [
-            { x: 250, y: 250, id: 1 },
-            { x: 300, y: 250, id: 2 },
-            { x: 350, y: 250, id: 3 }
+            { x: 250, y: 250, id: 7 },
+            { x: 400, y: 250, id: 8 },
+            { x: 550, y: 250, id: 9 }
         ]
     },
 ];
@@ -44,8 +44,8 @@ class playGame extends Phaser.Scene {
     create() {
         this.socket = io()
 
-
-
+        this.currentLevel = 1;
+        this.score = 0;
         this.health = 3;
         this.gameOver = false;
 
@@ -113,7 +113,21 @@ class playGame extends Phaser.Scene {
         for (let starPos of levelsConfig[0].chests) {
             this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
             this.chest.id = starPos.id
-            this.chest.setScale(2);
+            this.chest.setScale(1.5);
+            this.chest.setImmovable();
+            this.chests.push(this.chest);
+        }
+        for (let starPos of levelsConfig[1].chests) {
+            this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
+            this.chest.id = starPos.id
+            this.chest.setScale(1.5);
+            this.chest.setImmovable();
+            this.chests.push(this.chest);
+        }
+        for (let starPos of levelsConfig[2].chests) {
+            this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
+            this.chest.id = starPos.id
+            this.chest.setScale(1.5);
             this.chest.setImmovable();
             this.chests.push(this.chest);
         }
@@ -285,13 +299,14 @@ class playGame extends Phaser.Scene {
         if (this.interactKey.isDown) {
             this.disableInput();
             console.log('Chest id: ' + chest.id);
-            this.socket.emit('getQuestion', chest.id);
+            this.socket.emit('getQuestion', chest.id, this.currentLevel);
         }
     }
     showQuestion(question) {
         var socket = this.socket;
         var scene = this;
         console.log(question);
+        var level = this.currentLevel;
 
         var form = this.add.dom(this.player.x - 200, this.player.y - 200).createFromCache("form");
         document.getElementById('q').innerHTML = question;
@@ -302,7 +317,8 @@ class playGame extends Phaser.Scene {
                 var answer = this.getChildByName("answer");
                 // console.log(answer.value);
                 console.log(answer.value);
-                socket.emit('answer', answer.value);
+                console.log("odesilam zpravu z levelu %s", level);
+                socket.emit('answer', answer.value, level);
                 scene.enableInput();
                 form.destroy();
             }
@@ -311,16 +327,16 @@ class playGame extends Phaser.Scene {
 
     showResult(result) {
         // inform user about the result 
-
         if (result) {
             console.log('correct answer');
+            this.score += 1;
+            if (this.score == 3 || this.score == 6) {
+                this.currentLevel += 1;
+            }
 
         } else {
             console.log('wrong answer');
             this.health -= 1;
-            // change heart imgae
-
-            //game over when hp ==0
 
             if (this.health <= 0) {
                 this.gameOver = true;
@@ -329,11 +345,6 @@ class playGame extends Phaser.Scene {
                 setTimeout(() => {
                     this.scene.restart();
                 }, 5000)
-
-
-                //reload scene
-                //this.scene.restart();
-
             }
             console.log(this.health);
         }
@@ -352,9 +363,7 @@ class playGame extends Phaser.Scene {
                 form.destroy();
             }
         })
-
         console.log('incorrect chest!');
-
     }
 
     disableInput() {
