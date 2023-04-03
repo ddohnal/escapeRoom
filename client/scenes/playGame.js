@@ -62,6 +62,17 @@ class playGame extends Phaser.Scene {
         //enviroment collides setup
         this.wallsLayer.setCollisionByProperty({ collides: true });
 
+        this.itemLayer = map.getObjectLayer("Items")['objects'];
+        this.itemsGroup = this.physics.add.staticGroup()
+        var i = 1;
+        this.itemLayer.forEach(object => {
+            let obj = this.itemsGroup.create(object.x, object.y, 'treasure').setData('id', i);
+            obj.setScale(1.5);
+            obj.body.width = object.width;
+            obj.body.height = object.height;
+            i = i + 1;
+        })
+
         //heart
         // this.hearts = this.add.group();
         // this.hearts.createMultiple({
@@ -109,28 +120,28 @@ class playGame extends Phaser.Scene {
         this.isWithin.displayWidth = 60 * 1.2;
         this.isWithin.displayHeight = 65 * 1.5;
 
-        this.chests = []
-        for (let starPos of levelsConfig[0].chests) {
-            this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
-            this.chest.id = starPos.id
-            this.chest.setScale(1.5);
-            this.chest.setImmovable();
-            this.chests.push(this.chest);
-        }
-        for (let starPos of levelsConfig[1].chests) {
-            this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
-            this.chest.id = starPos.id
-            this.chest.setScale(1.5);
-            this.chest.setImmovable();
-            this.chests.push(this.chest);
-        }
-        for (let starPos of levelsConfig[2].chests) {
-            this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
-            this.chest.id = starPos.id
-            this.chest.setScale(1.5);
-            this.chest.setImmovable();
-            this.chests.push(this.chest);
-        }
+        // this.chests = []
+        // for (let starPos of levelsConfig[0].chests) {
+        //     this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
+        //     this.chest.id = starPos.id
+        //     this.chest.setScale(1.5);
+        //     this.chest.setImmovable();
+        //     this.chests.push(this.chest);
+        // }
+        // for (let starPos of levelsConfig[1].chests) {
+        //     this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
+        //     this.chest.id = starPos.id
+        //     this.chest.setScale(1.5);
+        //     this.chest.setImmovable();
+        //     this.chests.push(this.chest);
+        // }
+        // for (let starPos of levelsConfig[2].chests) {
+        //     this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
+        //     this.chest.id = starPos.id
+        //     this.chest.setScale(1.5);
+        //     this.chest.setImmovable();
+        //     this.chests.push(this.chest);
+        // }
 
         // keybindings
         this.leftKey = this.input.keyboard.addKey('A');
@@ -227,9 +238,10 @@ class playGame extends Phaser.Scene {
         // player collider with chests
         this.physics.add.collider(this.player, this.chests);
         this.physics.add.collider(this.player, this.wallsLayer);
+        this.physics.add.collider(this.player, this.itemsGroup);
 
-        // invisible sprite overlap with stars
-        this.physics.add.overlap(this.isWithin, this.chests, this.chestOverlap, null, this);
+        // invisible sprite overlap with chests
+        this.physics.add.overlap(this.isWithin, this.itemsGroup, this.chestOverlap, null, this);
 
         this.player.setCollideWorldBounds(true);
 
@@ -298,8 +310,8 @@ class playGame extends Phaser.Scene {
         // send chestID to the server
         if (this.interactKey.isDown) {
             this.disableInput();
-            console.log('Chest id: ' + chest.id);
-            this.socket.emit('getQuestion', chest.id, this.currentLevel);
+            console.log('Chest id: ' + chest.getData('id'));
+            this.socket.emit('getQuestion', chest.getData('id'), this.currentLevel);
         }
     }
     showQuestion(question) {

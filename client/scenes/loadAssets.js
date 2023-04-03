@@ -10,6 +10,8 @@ class loadAssets extends Phaser.Scene {
         this.load.image('ui-heart-empty', 'client/assets/images/ui_heart_empty.png');
         this.load.image('ui-heart-full', 'client/assets/images/ui_heart_full.png');
 
+        this.load.image('treasure', 'client/assets/images/treasure.png');
+
 
         this.load.spritesheet('dude', 'client/assets/images/dude.png',
             { frameWidth: 32, frameHeight: 48 }
