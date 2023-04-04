@@ -55,12 +55,19 @@ class playGame extends Phaser.Scene {
 
         //tilesmap
         const map = this.make.tilemap({ key: "map", tileWidth: 30, tileHeight: 30 });
+
         const tileset = map.addTilesetImage("tiles1", "tiles");
+        const propstileset = map.addTilesetImage("tiles2", "props")
+        const furnitureTileSet = map.addTilesetImage("tiles3", "furnitureTiles");
+
         this.groundLayer = map.createLayer("Ground", tileset, 0, 0);
         this.wallsLayer = map.createLayer("Walls", tileset, 0, 0);
+        this.propLayer = map.createLayer("Props", propstileset, 0, 0);
+        this.furnitureLayer = map.createLayer("Furniture", furnitureTileSet, 0, 0);
 
         //enviroment collides setup
         this.wallsLayer.setCollisionByProperty({ collides: true });
+        this.furnitureLayer.setCollisionByProperty({ collides: true });
 
         this.itemLayer = map.getObjectLayer("Items")['objects'];
         this.itemsGroup = this.physics.add.staticGroup()
@@ -112,6 +119,8 @@ class playGame extends Phaser.Scene {
 
         // player sprite
         this.player = this.physics.add.sprite(200, 200, 'boy');
+        this.player.setSize(20, 20,);
+        this.player.setOffset(22.5, 40);
         // resize bounding box
         this.time.addEvent({ delay: 1000, callback: this.delayDone, callbackScope: this, loop: false })
 
@@ -232,12 +241,14 @@ class playGame extends Phaser.Scene {
         this.player.setPipeline('Light2D');
         this.groundLayer.setPipeline('Light2D');
         this.wallsLayer.setPipeline('Light2D');
+        this.furnitureLayer.setPipeline('Light2D');
     }
 
     update() {
-        // player collider with chests
+        // player collider with objects
         this.physics.add.collider(this.player, this.chests);
         this.physics.add.collider(this.player, this.wallsLayer);
+        this.physics.add.collider(this.player, this.furnitureLayer);
         this.physics.add.collider(this.player, this.itemsGroup);
 
         // invisible sprite overlap with chests
@@ -420,6 +431,7 @@ class playGame extends Phaser.Scene {
     }
 
     delayDone() {
-        this.player.body.setSize(this.player.width * 0.6, this.player.height, true);
+        this.player.body.setSize(20, 20, 0, 0);
+
     }
 }

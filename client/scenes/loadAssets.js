@@ -24,7 +24,8 @@ class loadAssets extends Phaser.Scene {
 
         this.load.image("tiles", "client/assets/tilesmap/tiles/escape_room2.png");
         this.load.tilemapTiledJSON('map', "client/assets/tilesmap/json/map2.json");
-
+        this.load.image("props", "client/assets/tilesmap/tiles/props.png");
+        this.load.image("furnitureTiles", "client/assets/tilesmap/tiles/ClassRoom.png");
     }
 
     create() {
