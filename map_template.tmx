@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
  <editorsettings>
   <export target="client/assets/tilesmap/json/map1.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="tiles1" tilewidth="32" tileheight="32" tilecount="56" columns="7">
-  <image source="../../TilesMap/Dungeon Tiles/Dungeon Tiles/Full.png" width="224" height="256"/>
+  <image source="../../tiled_test/escape_room.png" width="224" height="256"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="false"/>
