@@ -1,37 +1,3 @@
-const levelsConfig = [
-    //level one
-    {
-        levelID: 1,
-        //array of chests positions
-        chests: [
-            { x: 250, y: 100, id: 1 },
-            { x: 400, y: 100, id: 2 },
-            { x: 550, y: 100, id: 3 }
-        ]
-    },
-
-    //level two
-    {
-        levelID: 2,
-        //array of chests positions
-        chests: [
-            { x: 250, y: 200, id: 4 },
-            { x: 400, y: 200, id: 5 },
-            { x: 550, y: 200, id: 6 }
-        ]
-    },
-    //level three
-    {
-        levelID: 3,
-        //array of chests positions
-        chests: [
-            { x: 250, y: 250, id: 7 },
-            { x: 400, y: 250, id: 8 },
-            { x: 550, y: 250, id: 9 }
-        ]
-    },
-];
-
 class playGame extends Phaser.Scene {
     constructor() {
         super('playGame');
@@ -44,10 +10,22 @@ class playGame extends Phaser.Scene {
     create() {
         this.socket = io()
 
+        this.screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        this.screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+
         this.currentLevel = 1;
         this.score = 0;
         this.health = 3;
+
         this.gameOver = false;
+        this.gameOverTime = 60;
+
+        this.hint = "";
+        this.hintX = 0;
+        this.hintY = 0;
+
+        this.timeLeft = this.gameOverTime;
+
 
         console.log(this.health);
 
@@ -71,31 +49,19 @@ class playGame extends Phaser.Scene {
 
         this.itemLayer = map.getObjectLayer("Items")['objects'];
         this.itemsGroup = this.physics.add.staticGroup()
-        var i = 1;
+
         this.itemLayer.forEach(object => {
-            let obj = this.itemsGroup.create(object.x, object.y, 'treasure').setData('id', i);
+            let obj = this.itemsGroup.create(object.x, object.y, object.name).setData('id', object.id);
             obj.setScale(1.5);
+            let name = object.name;
+            console.log(name);
+
             obj.body.width = object.width;
             obj.body.height = object.height;
-            i = i + 1;
+
         })
 
-        //heart
-        // this.hearts = this.add.group();
-        // this.hearts.createMultiple({
-        //     key: 'ui-heart-full',
-        //     setXY: {
-        //         x: 20,
-        //         y: 20,
-        //         stepX: 60
-        //     },
-        //     quantity: 3
-        // })
-
-        // this.hearts.scaleXY(1.5, 1.5);
-
-
-        this.style = { font: "bold 12px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        this.style = { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
         //hp text
         this.hpText = this.add.text(0, 50, "HP: " + this.health, this.style);
         this.hpText.scrollFactorX = 0
@@ -113,6 +79,34 @@ class playGame extends Phaser.Scene {
         this.interactText.scrollFactorX = 0
         this.interactText.scrollFactorY = 0
 
+        this.hintText = this.add.text(100, 20, "Hint: " + this.hint, this.style);
+        this.hintText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+        //this.hintText.scrollFactorX = 0
+        //this.hintText.scrollFactorY = 0
+        this.hintText.setOrigin(0.5, 0.5);
+        this.hintText.visible = false
+
+        this.timerText = this.add.text(this.screenCenterX, 50, 'Time left: ' + this.timeLeft, { fontFamily: 'Arial', fontSize: 16, color: '#ffffff' });
+        this.timerText.setOrigin(0.5, 0.5);
+        this.timerText.scrollFactorX = 0;
+        this.timerText.scrollFactorY = 0;
+
+
+        this.time.addEvent({
+            delay: this.gameOverTime * 1000, // časový limit v milisekundách
+            callback: this.endGame, // funkce, která se má spustit po uplynutí času
+            callbackScope: this
+        });
+
+        this.time.addEvent({
+            delay: 1000, // časový limit v milisekundách
+            repeat: this.timeLeft - 1, // počet opakování
+            callback: this.timerCounter,
+            callbackScope: this
+        });
+
+
+
 
 
 
@@ -129,28 +123,7 @@ class playGame extends Phaser.Scene {
         this.isWithin.displayWidth = 60 * 1.2;
         this.isWithin.displayHeight = 65 * 1.5;
 
-        // this.chests = []
-        // for (let starPos of levelsConfig[0].chests) {
-        //     this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
-        //     this.chest.id = starPos.id
-        //     this.chest.setScale(1.5);
-        //     this.chest.setImmovable();
-        //     this.chests.push(this.chest);
-        // }
-        // for (let starPos of levelsConfig[1].chests) {
-        //     this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
-        //     this.chest.id = starPos.id
-        //     this.chest.setScale(1.5);
-        //     this.chest.setImmovable();
-        //     this.chests.push(this.chest);
-        // }
-        // for (let starPos of levelsConfig[2].chests) {
-        //     this.chest = this.physics.add.image(starPos.x, starPos.y, 'chest')
-        //     this.chest.id = starPos.id
-        //     this.chest.setScale(1.5);
-        //     this.chest.setImmovable();
-        //     this.chests.push(this.chest);
-        // }
+
 
         // keybindings
         this.leftKey = this.input.keyboard.addKey('A');
@@ -216,12 +189,14 @@ class playGame extends Phaser.Scene {
 
         // form sockets
         this.socket.on('questionToAsk', (question) => this.showQuestion(question));
-        this.socket.on('result', (result) => this.showResult(result));
+        this.socket.on('result', (result, hint) => this.showResult(result, hint));
         this.socket.on('incorrect chest', (message) => this.inCorrectChest(message));
 
         //game over text
-        this.gameOverText = this.add.text(this.player.x, this.player.y, 'Game Over', { fontSize: '64px', fill: '#FFF' });
-        // this.gameOverText.setOrigin(0.5);
+        this.gameOverText = this.add.text(this.screenCenterX, 100, 'Game Over', { fontSize: '64px', fill: '#FFF' });
+        this.gameOverText.setOrigin(0.5, 0.5);
+        this.gameOverText.scrollFactorX = 0;
+        this.gameOverText.scrollFactorY = 0;
         this.gameOverText.visible = false;
 
         this.cameras.main.startFollow(this.player);
@@ -321,6 +296,8 @@ class playGame extends Phaser.Scene {
         // send chestID to the server
         if (this.interactKey.isDown) {
             this.disableInput();
+            this.hintX = chest.x;
+            this.hintY = chest.y;
             console.log('Chest id: ' + chest.getData('id'));
             this.socket.emit('getQuestion', chest.getData('id'), this.currentLevel);
         }
@@ -348,10 +325,23 @@ class playGame extends Phaser.Scene {
         })
     }
 
-    showResult(result) {
+    showResult(result, hint) {
         // inform user about the result 
         if (result) {
             console.log('correct answer');
+            if (hint) {
+                console.log(hint);
+                this.hint = hint;
+                this.hintText.setText("Hint: " + this.hint)
+                this.hintText.x = this.hintX;
+                this.hintText.y = this.hintY - 30;
+
+                this.hintText.visible = true;
+            }
+            else {
+                this.hintText.visible = false;
+            }
+
             this.score += 1;
             if (this.score == 3 || this.score == 6) {
                 this.currentLevel += 1;
@@ -362,12 +352,7 @@ class playGame extends Phaser.Scene {
             this.health -= 1;
 
             if (this.health <= 0) {
-                this.gameOver = true;
-                this.gameOverText.visible = true;
-
-                setTimeout(() => {
-                    this.scene.restart();
-                }, 5000)
+                this.endGame();
             }
             console.log(this.health);
         }
@@ -432,6 +417,20 @@ class playGame extends Phaser.Scene {
 
     delayDone() {
         this.player.body.setSize(20, 20, 0, 0);
+    }
 
+    endGame() {
+        this.gameOver = true;
+        this.gameOverText.visible = true;
+        this.timerText.visible = false;
+
+        setTimeout(() => {
+            this.scene.restart();
+        }, 3000)
+    }
+
+    timerCounter() {
+        this.timeLeft--; // snižuje zbývající čas
+        this.timerText.setText('Time left: ' + this.timeLeft); // aktualizuje text
     }
 }

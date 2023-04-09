@@ -38,7 +38,7 @@ io.on('connection', function (socket) {
         questionsFirstLevel: historyQ,
         answersFirtLevel: historyA,
         randomQuestionsFirstLevel: Array.from(Array(historyQ.length).keys()).sort((a, b) => 0.5 - Math.random()), //generate sequence of questions
-        chestFirstLevelID: [1, 2, 3],
+        chestFirstLevelID: [1, 2, 3].sort(() => Math.random() - 0.5),
 
         //second level params        
         questionsSecondLevel: geographyQ,
@@ -51,6 +51,8 @@ io.on('connection', function (socket) {
         answersThirdLevel: mathA,
         randomQuestionsThirdLevel: Array.from(Array(mathQ.length).keys()).sort((a, b) => 0.5 - Math.random()),
         chestThirdLevelID: [7, 8, 9],
+
+        hints: ["up", "left", "down", "hint: 4", "hint: 5", "hint: 6", "hint: 7", "hint: 8", "hint: 9"]
     }
 
 
@@ -105,7 +107,8 @@ io.on('connection', function (socket) {
                 players[socket.id].randomQuestionsFirstLevel.shift();
                 players[socket.id].chestFirstLevelID.shift();
 
-                socket.emit('result', true);
+
+                socket.emit('result', true, players[socket.id].hints[players[socket.id].chestFirstLevelID[0] - 1]);
                 console.log('<=[sent][%s]: correct, chest %s removed, remaining %s', socket.id, chest, players[socket.id].chestFirstLevelID);
             } else {
                 socket.emit('result', false);

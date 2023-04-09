@@ -341,36 +341,36 @@
          "name":"Items",
          "objects":[
                 {
-                 "class":"",
                  "gid":596,
                  "height":16,
                  "id":1,
-                 "name":"",
+                 "name":"treasure",
                  "rotation":0,
+                 "type":"",
                  "visible":true,
                  "width":16,
                  "x":767.333333333333,
                  "y":64
                 }, 
                 {
-                 "class":"",
                  "gid":596,
                  "height":16,
                  "id":2,
-                 "name":"",
+                 "name":"treasure",
                  "rotation":0,
+                 "type":"",
                  "visible":true,
                  "width":16,
                  "x":15.3333333333333,
                  "y":78.6666666666667
                 }, 
                 {
-                 "class":"",
                  "gid":596,
                  "height":16,
                  "id":3,
-                 "name":"",
+                 "name":"treasure",
                  "rotation":0,
+                 "type":"",
                  "visible":true,
                  "width":16,
                  "x":768.666666666667,
@@ -605,10 +605,10 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":4,
+ "nextobjectid":14,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.9.2",
+ "tiledversion":"1.10.0",
  "tileheight":16,
  "tilesets":[
         {
@@ -30659,6 +30659,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":"1.9",
+ "version":"1.10",
  "width":50
 }
