@@ -35,15 +35,17 @@ class playGame extends Phaser.Scene {
         const map = this.make.tilemap({ key: "map", tileWidth: 30, tileHeight: 30 });
 
         const tileset = map.addTilesetImage("tiles1", "tiles");
-        // const propstileset = map.addTilesetImage("tiles2", "props")
-        const furnitureTileSet = map.addTilesetImage("tiles2", "furnitureTiles");
+        const propstileset = map.addTilesetImage("tiles2", "tiles_props")
+        const furnitureTileSet = map.addTilesetImage("tiles2", "propstileset");
 
         this.groundLayer = map.createLayer("Ground", tileset, 0, 0);
 
         this.groundLayer.setScale(1.75);
         this.wallsLayer = map.createLayer("Walls", tileset, 0, 0);
         this.wallsLayer.setScale(1.75);
-        // this.propLayer = map.createLayer("Props", propstileset, 0, 0);
+
+        this.propLayer = map.createLayer("Props", propstileset, 0, 0);
+        this.propLayer.setScale(1.75);
         // this.furnitureLayer = map.createLayer("Furniture", furnitureTileSet, 0, 0);
 
         //enviroment collides setup
@@ -219,6 +221,7 @@ class playGame extends Phaser.Scene {
         // this.player.setPipeline('Light2D');
         this.groundLayer.setPipeline('Light2D');
         this.wallsLayer.setPipeline('Light2D');
+        this.propLayer.setPipeline('Light2D');
         // this.furnitureLayer.setPipeline('Light2D');
     }
 
