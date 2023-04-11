@@ -39,27 +39,30 @@ class playGame extends Phaser.Scene {
         const furnitureTileSet = map.addTilesetImage("tiles2", "furnitureTiles");
 
         this.groundLayer = map.createLayer("Ground", tileset, 0, 0);
+
+        this.groundLayer.setScale(1.75);
         this.wallsLayer = map.createLayer("Walls", tileset, 0, 0);
+        this.wallsLayer.setScale(1.75);
         // this.propLayer = map.createLayer("Props", propstileset, 0, 0);
-        this.furnitureLayer = map.createLayer("Furniture", furnitureTileSet, 0, 0);
+        // this.furnitureLayer = map.createLayer("Furniture", furnitureTileSet, 0, 0);
 
         //enviroment collides setup
-        this.wallsLayer.setCollisionByProperty({ collides: true });
-        this.furnitureLayer.setCollisionByProperty({ collides: true });
+        // this.wallsLayer.setCollisionByProperty({ collides: true });
+        // this.furnitureLayer.setCollisionByProperty({ collides: true });
 
-        this.itemLayer = map.getObjectLayer("Items")['objects'];
-        this.itemsGroup = this.physics.add.staticGroup()
+        // this.itemLayer = map.getObjectLayer("Items")['objects'];
+        // this.itemsGroup = this.physics.add.staticGroup()
 
-        this.itemLayer.forEach(object => {
-            let obj = this.itemsGroup.create(object.x, object.y, object.name).setData('id', object.id);
-            obj.setScale(1.5);
-            let name = object.name;
-            console.log(name);
+        // this.itemLayer.forEach(object => {
+        //     let obj = this.itemsGroup.create(object.x, object.y, object.name).setData('id', object.id);
+        //     obj.setScale(1.5);
+        //     let name = object.name;
+        //     console.log(name);
 
-            obj.body.width = object.width;
-            obj.body.height = object.height;
+        //     obj.body.width = object.width;
+        //     obj.body.height = object.height;
 
-        })
+        // })
 
         this.style = { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
         //hp text
@@ -209,14 +212,14 @@ class playGame extends Phaser.Scene {
 
         // light
         this.lights.enable();
-        this.lights.setAmbientColor(0x808080);
-        this.light = this.lights.addLight(this.player.x, this.player.y, 150).setColor(0xFFFFFF).setIntensity(1);
+        this.lights.setAmbientColor(0x6AA578);
+        this.light = this.lights.addLight(this.player.x, this.player.y, 150).setColor(0xFFFFFF).setIntensity(5);
 
         // light affect object
-        this.player.setPipeline('Light2D');
+        // this.player.setPipeline('Light2D');
         this.groundLayer.setPipeline('Light2D');
         this.wallsLayer.setPipeline('Light2D');
-        this.furnitureLayer.setPipeline('Light2D');
+        // this.furnitureLayer.setPipeline('Light2D');
     }
 
     update() {
