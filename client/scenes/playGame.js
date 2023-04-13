@@ -235,7 +235,7 @@ class playGame extends Phaser.Scene {
         // invisible sprite overlap with chests
         this.physics.add.overlap(this.isWithin, this.itemsGroup, this.chestOverlap, null, this);
 
-        this.player.setCollideWorldBounds(true);
+        // this.player.setCollideWorldBounds(true);
 
         // reset player movement if no keybind is pressed
         this.player.body.velocity.x = 0;
@@ -296,6 +296,11 @@ class playGame extends Phaser.Scene {
         //light
         this.light.x = this.player.x;
         this.light.y = this.player.y;
+
+        if (this.interactKey.isDown) {
+            this.player.x = 176;
+            this.player.y = 2698;
+        }
     }
 
     chestOverlap(player, chest) {
