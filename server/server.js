@@ -52,7 +52,7 @@ io.on('connection', function (socket) {
         randomQuestionsThirdLevel: Array.from(Array(mathQ.length).keys()).sort((a, b) => 0.5 - Math.random()),
         chestThirdLevelID: [7, 8, 9],
 
-        hints: ["up", "left", "down", "hint: 4", "hint: 5", "hint: 6", "hint: 7", "hint: 8", "hint: 9"]
+        hints: ["grave", "books", "chest", "picture", "hint: 5", "hint: 6", "hint: 7", "hint: 8", "hint: 9"]
     }
 
 
