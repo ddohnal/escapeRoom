@@ -35,31 +35,56 @@ class playGame extends Phaser.Scene {
         const map = this.make.tilemap({ key: "map", tileWidth: 30, tileHeight: 30 });
 
         const tileset = map.addTilesetImage("tiles1", "tiles");
-        // const propstileset = map.addTilesetImage("tiles2", "props")
-        const furnitureTileSet = map.addTilesetImage("tiles2", "furnitureTiles");
+        const propstileset = map.addTilesetImage("tiles2", "tiles_props")
+        const decorativetileset = map.addTilesetImage("tiles3", "tiles_decorative")
+        // const furnitureTileSet = map.addTilesetImage("tiles2", "propstileset");
 
         this.groundLayer = map.createLayer("Ground", tileset, 0, 0);
+        this.groundLayer.setScale(1.75);
+
         this.wallsLayer = map.createLayer("Walls", tileset, 0, 0);
-        // this.propLayer = map.createLayer("Props", propstileset, 0, 0);
-        this.furnitureLayer = map.createLayer("Furniture", furnitureTileSet, 0, 0);
+        this.wallsLayer.setScale(1.75);
+        this.wallsLayer.setCollisionByProperty({ collides: true });
+
+        this.propLayer = map.createLayer("Props", propstileset, 0, 0);
+        this.propLayer.setScale(1.75);
+        this.propLayer.setCollisionByProperty({ collides: true });
+
+        this.decorativeLayer = map.createLayer("Decorative", decorativetileset, 0, 0);
+        this.decorativeLayer.setScale(1.75);
+        this.decorativeLayer.setCollisionByProperty({ collides: true });
+        // this.furnitureLayer = map.createLayer("Furniture", furnitureTileSet, 0, 0);
 
         //enviroment collides setup
-        this.wallsLayer.setCollisionByProperty({ collides: true });
-        this.furnitureLayer.setCollisionByProperty({ collides: true });
 
-        this.itemLayer = map.getObjectLayer("Items")['objects'];
+        // this.furnitureLayer.setCollisionByProperty({ collides: true });
+
+        this.itemLayer = map.getObjectLayer("Items", 0, 0)['objects'];
         this.itemsGroup = this.physics.add.staticGroup()
 
         this.itemLayer.forEach(object => {
-            let obj = this.itemsGroup.create(object.x, object.y, object.name).setData('id', object.id);
-            obj.setScale(1.5);
+            let obj = this.itemsGroup.create(object.x * 1.75 + object.width, object.y * 1.75 - object.width, object.name).setData('id', object.properties[0].value);
+            obj.setScale(1.75);
             let name = object.name;
-            console.log(name);
-
+            console.log(name + obj.getData('id'));
             obj.body.width = object.width;
             obj.body.height = object.height;
-
+            obj.setPipeline('Light2D');
         })
+
+        this.doorLayer = map.getObjectLayer("Doors", 0, 0)['objects'];
+        this.doorsGroup = this.physics.add.staticGroup()
+
+        this.doorLayer.forEach(object => {
+            let obj = this.doorsGroup.create(object.x * 1.75 + object.width, object.y * 1.75 - object.width, object.name).setData('id', object.properties[0].value);
+            obj.setScale(1.75);
+            let name = object.name;
+            console.log(name);
+            obj.body.width = object.width;
+            obj.body.height = object.height;
+            obj.setPipeline('Light2D');
+        })
+
 
         this.style = { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
         //hp text
@@ -105,15 +130,9 @@ class playGame extends Phaser.Scene {
             callbackScope: this
         });
 
-
-
-
-
-
-
         // player sprite
-        this.player = this.physics.add.sprite(200, 200, 'boy');
-        this.player.setSize(20, 20,);
+        this.player = this.physics.add.sprite(200, 300, 'boy');
+        this.player.setSize(20, 20);
         this.player.setOffset(22.5, 40);
         // resize bounding box
         this.time.addEvent({ delay: 1000, callback: this.delayDone, callbackScope: this, loop: false })
@@ -209,27 +228,37 @@ class playGame extends Phaser.Scene {
 
         // light
         this.lights.enable();
-        this.lights.setAmbientColor(0x808080);
-        this.light = this.lights.addLight(this.player.x, this.player.y, 150).setColor(0xFFFFFF).setIntensity(1);
+        this.lights.setAmbientColor(0x6AA578);
+        this.light = this.lights.addLight(this.player.x, this.player.y, 150).setColor(0xFFFFFF).setIntensity(5);
 
         // light affect object
-        this.player.setPipeline('Light2D');
+        // this.player.setPipeline('Light2D');
         this.groundLayer.setPipeline('Light2D');
         this.wallsLayer.setPipeline('Light2D');
-        this.furnitureLayer.setPipeline('Light2D');
+        this.propLayer.setPipeline('Light2D');
+
+
+
+        // this.furnitureLayer.setPipeline('Light2D');
     }
 
     update() {
         // player collider with objects
         this.physics.add.collider(this.player, this.chests);
         this.physics.add.collider(this.player, this.wallsLayer);
-        this.physics.add.collider(this.player, this.furnitureLayer);
+        this.physics.add.collider(this.player, this.propLayer);
+        this.physics.add.collider(this.player, this.decorativeLayer);
         this.physics.add.collider(this.player, this.itemsGroup);
+        this.physics.add.collider(this.player, this.doorsGroup);
 
         // invisible sprite overlap with chests
         this.physics.add.overlap(this.isWithin, this.itemsGroup, this.chestOverlap, null, this);
 
-        this.player.setCollideWorldBounds(true);
+        this.physics.add.overlap(this.isWithin, this.doorsGroup, this.doorOverlap, null, this);
+
+        // this.player.setCollideWorldBounds(true);
+
+        // console.log(this.player.x, this.player.y);
 
         // reset player movement if no keybind is pressed
         this.player.body.velocity.x = 0;
@@ -290,6 +319,8 @@ class playGame extends Phaser.Scene {
         //light
         this.light.x = this.player.x;
         this.light.y = this.player.y;
+
+
     }
 
     chestOverlap(player, chest) {
@@ -300,6 +331,16 @@ class playGame extends Phaser.Scene {
             this.hintY = chest.y;
             console.log('Chest id: ' + chest.getData('id'));
             this.socket.emit('getQuestion', chest.getData('id'), this.currentLevel);
+        }
+    }
+
+    doorOverlap(player, door) {
+        if (this.interactKey.isDown) {
+            if (door.getData('id') == this.currentLevel && this.score == 3) {
+                this.currentLevel += 1;
+                this.player.x = 176;
+                this.player.y = 2698;
+            }
         }
     }
     showQuestion(question) {
@@ -343,9 +384,6 @@ class playGame extends Phaser.Scene {
             }
 
             this.score += 1;
-            if (this.score == 3 || this.score == 6) {
-                this.currentLevel += 1;
-            }
 
         } else {
             console.log('wrong answer');
