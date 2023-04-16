@@ -228,7 +228,7 @@ class playGame extends Phaser.Scene {
 
         // light
         this.lights.enable();
-        this.lights.setAmbientColor(0x6AA578);
+        this.lights.setAmbientColor(0x644141);
         this.light = this.lights.addLight(this.player.x, this.player.y, 150).setColor(0xFFFFFF).setIntensity(5);
 
         // light affect object
@@ -236,6 +236,7 @@ class playGame extends Phaser.Scene {
         this.groundLayer.setPipeline('Light2D');
         this.wallsLayer.setPipeline('Light2D');
         this.propLayer.setPipeline('Light2D');
+        this.decorativeLayer.setPipeline('Light2D');
 
 
 

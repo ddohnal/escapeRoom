@@ -17,6 +17,8 @@ window.onload = function () {
         },
 
         scene: [
+            menu,
+            control_menu,
             loadAssets,
             playGame
         ],
