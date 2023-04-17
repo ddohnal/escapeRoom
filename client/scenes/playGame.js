@@ -128,7 +128,7 @@ class playGame extends Phaser.Scene {
         });
 
         // player sprite
-        this.player = this.physics.add.sprite(400, 600, 'boy');
+        this.player = this.physics.add.sprite(286, 2627, 'boy');
         this.player.setSize(20, 20);
         this.player.setOffset(22.5, 40);
         // resize bounding box
