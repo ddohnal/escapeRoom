@@ -34,7 +34,10 @@ class loadAssets extends Phaser.Scene {
         this.load.image('doors', 'client/assets/images/doors.png');
 
 
-
+        this.load.image('candle1', 'client/assets/images/candleA_01.png');
+        this.load.image('candle2', 'client/assets/images/candleA_02.png');
+        this.load.image('candle3', 'client/assets/images/candleA_03.png');
+        this.load.image('candle4', 'client/assets/images/candleA_04.png');
 
 
         this.load.spritesheet('dude', 'client/assets/images/dude.png',
@@ -53,6 +56,7 @@ class loadAssets extends Phaser.Scene {
         this.load.image("tiles", "client/assets/tilesmap/tiles/cata_1.png");
         this.load.image("tiles_props", "client/assets/tilesmap/tiles/cata_2.png");
         this.load.image("tiles_decorative", "client/assets/tilesmap/tiles/decorative.png");
+
         this.load.tilemapTiledJSON('map', "client/assets/tilesmap/json/map3.json");
     }
 

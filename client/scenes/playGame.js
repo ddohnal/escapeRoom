@@ -37,6 +37,7 @@ class playGame extends Phaser.Scene {
         const tileset = map.addTilesetImage("tiles1", "tiles");
         const propstileset = map.addTilesetImage("tiles2", "tiles_props")
         const decorativetileset = map.addTilesetImage("tiles3", "tiles_decorative")
+        const fireItileset = map.addTilesetImage("tiles4", "tiles_fire")
         // const furnitureTileSet = map.addTilesetImage("tiles2", "propstileset");
 
         this.groundLayer = map.createLayer("Ground", tileset, 0, 0);
@@ -53,11 +54,7 @@ class playGame extends Phaser.Scene {
         this.decorativeLayer = map.createLayer("Decorative", decorativetileset, 0, 0);
         this.decorativeLayer.setScale(1.75);
         this.decorativeLayer.setCollisionByProperty({ collides: true });
-        // this.furnitureLayer = map.createLayer("Furniture", furnitureTileSet, 0, 0);
 
-        //enviroment collides setup
-
-        // this.furnitureLayer.setCollisionByProperty({ collides: true });
 
         this.itemLayer = map.getObjectLayer("Items", 0, 0)['objects'];
         this.itemsGroup = this.physics.add.staticGroup()
@@ -131,7 +128,7 @@ class playGame extends Phaser.Scene {
         });
 
         // player sprite
-        this.player = this.physics.add.sprite(200, 300, 'boy');
+        this.player = this.physics.add.sprite(400, 600, 'boy');
         this.player.setSize(20, 20);
         this.player.setOffset(22.5, 40);
         // resize bounding box
@@ -206,10 +203,45 @@ class playGame extends Phaser.Scene {
             frameRate: 10
         });
 
-        // form sockets
-        this.socket.on('questionToAsk', (question) => this.showQuestion(question));
-        this.socket.on('result', (result, hint) => this.showResult(result, hint));
-        this.socket.on('incorrect chest', (message) => this.inCorrectChest(message));
+
+        this.candleLayer = map.getObjectLayer("Candles", 0, 0)['objects'];
+        this.candleGroup = this.physics.add.staticGroup()
+
+        this.candleLayer.forEach(object => {
+            this.candleGroup.add(this.add.sprite(object.x * 1.75 + object.width, object.y * 1.75 - object.width, object.name)
+                .setScale(1.75))
+            this.lights.addLight(object.x * 1.75 + object.width, object.y * 1.75 - object.width, 150).setColor(0xEED6A7).setIntensity(3);
+            // let obj = this.candleGroup.create(object.x * 1.75 + object.width, object.y * 1.75 - object.width, object.name);
+            // obj.setScale(1.75);
+            // obj.body.width = object.width;
+            // obj.body.height = object.height;
+            // obj.setPipeline('Light2D');
+        })
+
+        this.anims.create({
+            key: 'burn',
+            frames: [
+                { key: 'candle1', frame: null },
+                // { key: 'candle2', frame: null },
+                // { key: 'candle3', frame: null },
+                { key: 'candle4', frame: null, duration: 50 }
+            ],
+            frameRate: 8,
+            repeat: -1
+        });
+
+        this.lights.enable();
+        this.lights.setAmbientColor(0x806666);
+
+        this.candleGroup.getChildren().forEach(function (candle) {
+            candle.anims.play('burn', true);
+            candle.setDepth(1);
+        });
+
+
+
+
+
 
         //game over text
         this.gameOverText = this.add.text(this.screenCenterX, 100, 'Game Over', { fontSize: '64px', fill: '#FFF' });
@@ -227,9 +259,15 @@ class playGame extends Phaser.Scene {
 
 
         // light
-        this.lights.enable();
-        this.lights.setAmbientColor(0x644141);
+
         this.light = this.lights.addLight(this.player.x, this.player.y, 150).setColor(0xFFFFFF).setIntensity(5);
+
+        this.bridgeLight1 = this.lights.addLight(1473, 1932, 150).setColor(0xBD8AC5).setIntensity(3);
+        this.bridgeLight2 = this.lights.addLight(1129, 1456, 150).setColor(0xBD8AC5).setIntensity(3);
+        this.bridgeLight3 = this.lights.addLight(1129, 1308, 150).setColor(0xBD8AC5).setIntensity(3);
+        this.bridgeLight4 = this.lights.addLight(1473, 1308, 150).setColor(0xBD8AC5).setIntensity(3);
+
+        this.candleLight = this.lights.addLight(472, 2268, 100).setColor(0xEEB950).setIntensity(1);
 
         // light affect object
         // this.player.setPipeline('Light2D');
@@ -240,10 +278,15 @@ class playGame extends Phaser.Scene {
 
 
 
-        // this.furnitureLayer.setPipeline('Light2D');
+        // form sockets
+        this.socket.on('questionToAsk', (question) => this.showQuestion(question));
+        this.socket.on('result', (result, hint) => this.showResult(result, hint));
+        this.socket.on('incorrect chest', (message) => this.inCorrectChest(message));
     }
 
     update() {
+
+
         // player collider with objects
         this.physics.add.collider(this.player, this.chests);
         this.physics.add.collider(this.player, this.wallsLayer);
@@ -259,7 +302,7 @@ class playGame extends Phaser.Scene {
 
         // this.player.setCollideWorldBounds(true);
 
-        // console.log(this.player.x, this.player.y);
+        console.log(this.player.x, this.player.y);
 
         // reset player movement if no keybind is pressed
         this.player.body.velocity.x = 0;
