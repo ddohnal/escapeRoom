@@ -263,9 +263,9 @@ class playGame extends Phaser.Scene {
         this.light = this.lights.addLight(this.player.x, this.player.y, 150).setColor(0xFFFFFF).setIntensity(5);
 
         this.bridgeLight1 = this.lights.addLight(1473, 1932, 150).setColor(0xBD8AC5).setIntensity(3);
-        this.bridgeLight2 = this.lights.addLight(1129, 1456, 150).setColor(0xBD8AC5).setIntensity(3);
+        // this.bridgeLight2 = this.lights.addLight(1129, 1456, 150).setColor(0xBD8AC5).setIntensity(3);
         this.bridgeLight3 = this.lights.addLight(1129, 1308, 150).setColor(0xBD8AC5).setIntensity(3);
-        this.bridgeLight4 = this.lights.addLight(1473, 1308, 150).setColor(0xBD8AC5).setIntensity(3);
+        // this.bridgeLight4 = this.lights.addLight(1473, 1308, 150).setColor(0xBD8AC5).setIntensity(3);
 
         this.candleLight = this.lights.addLight(472, 2268, 100).setColor(0xEEB950).setIntensity(1);
 

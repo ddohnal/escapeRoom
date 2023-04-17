@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="38">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="52">
  <editorsettings>
   <export target="client/assets/tilesmap/json/map3.json" format="json"/>
  </editorsettings>
@@ -15784,10 +15784,18 @@
   </object>
  </objectgroup>
  <objectgroup id="11" name="Candles">
-  <object id="32" gid="3088" x="26" y="145.667" width="7" height="14"/>
-  <object id="33" gid="3088" x="121.333" y="146.667" width="7" height="14"/>
-  <object id="34" gid="3088" x="26" y="350.667" width="7" height="14"/>
-  <object id="36" gid="3088" x="436" y="346" width="7" height="14"/>
-  <object id="37" gid="3088" x="212" y="244.333" width="7" height="14"/>
+  <object id="32" name="candle1" gid="3088" x="26" y="145.667" width="7" height="14"/>
+  <object id="33" name="candle1" gid="3088" x="121.333" y="146.667" width="7" height="14"/>
+  <object id="34" name="candle1" gid="3088" x="26" y="350.667" width="7" height="14"/>
+  <object id="36" name="candle1" gid="3088" x="436" y="346" width="7" height="14"/>
+  <object id="37" name="candle1" gid="3088" x="212" y="244.333" width="7" height="14"/>
+  <object id="38" name="candle1" gid="3088" x="21.6667" y="1489.67" width="7" height="14"/>
+  <object id="39" name="candle1" gid="3088" x="22.3333" y="1262.33" width="7" height="14"/>
+  <object id="40" name="candle1" gid="3088" x="308.333" y="1399.67" width="7" height="14"/>
+  <object id="41" name="candle1" gid="3088" x="308.333" y="1289.67" width="7" height="14"/>
+  <object id="46" name="candle1" gid="3088" x="833" y="1410.5" width="7" height="14"/>
+  <object id="47" name="candle1" gid="3088" x="461" y="1353" width="7" height="14"/>
+  <object id="48" name="candle1" gid="3088" x="269.667" y="1015" width="7" height="14"/>
+  <object id="50" name="candle1" gid="3088" x="549" y="1051.67" width="7" height="14"/>
  </objectgroup>
 </map>
