@@ -26,6 +26,7 @@ app.get('/', function (request, response) {
     response.sendFile(path.join(__dirname, '../client/index.html'))
 })
 
+// console.log(Array.from(Array(historyQ.length).keys()).sort((a, b) => 0.5 - Math.random()).slice(0, 2));
 
 
 io.on('connection', function (socket) {
@@ -37,22 +38,22 @@ io.on('connection', function (socket) {
         //first level params        
         questionsFirstLevel: historyQ,
         answersFirtLevel: historyA,
-        randomQuestionsFirstLevel: Array.from(Array(historyQ.length).keys()).sort((a, b) => 0.5 - Math.random()), //generate sequence of questions
         chestFirstLevelID: [1, 2, 3].sort(() => Math.random() - 0.5),
+        randomQuestionsFirstLevel: Array.from(Array(historyQ.length).keys()).sort((a, b) => 0.5 - Math.random()).slice(0, 3), //generate sequence of questions
 
         //second level params        
         questionsSecondLevel: geographyQ,
         answersSecondLevel: geographyA,
-        randomQuestionsSecondLevel: Array.from(Array(geographyQ.length).keys()).sort((a, b) => 0.5 - Math.random()),
-        chestSecondLevelID: [4, 5, 6],
+        randomQuestionsSecondLevel: Array.from(Array(geographyQ.length).keys()).sort((a, b) => 0.5 - Math.random()).slice(0, 3),
+        chestSecondLevelID: [4, 5, 6].sort(() => Math.random() - 0.5),
 
         //third level params        
         questionsThirdLevel: mathQ,
         answersThirdLevel: mathA,
-        randomQuestionsThirdLevel: Array.from(Array(mathQ.length).keys()).sort((a, b) => 0.5 - Math.random()),
-        chestThirdLevelID: [7, 8, 9],
+        randomQuestionsThirdLevel: Array.from(Array(mathQ.length).keys()).sort((a, b) => 0.5 - Math.random()).slice(0, 5),
+        chestThirdLevelID: [7, 8, 9, 10, 11].sort(() => Math.random() - 0.5),
 
-        hints: ["grave", "books", "chest", "picture", "hint: 5", "hint: 6", "hint: 7", "hint: 8", "hint: 9"]
+        hints: ["grave", "books", "chest", "library", "books", "books on desk", "grave", "statue", "books", "green chest", "red chest"]
     }
 
 
@@ -123,7 +124,7 @@ io.on('connection', function (socket) {
                 players[socket.id].randomQuestionsSecondLevel.shift();
                 players[socket.id].chestSecondLevelID.shift();
 
-                socket.emit('result', true);
+                socket.emit('result', true, players[socket.id].hints[players[socket.id].chestSecondLevelID[0] - 1]);
                 console.log('<=[sent][%s]: correct, chest %s removed, remaining %s', socket.id, chest, players[socket.id].chestSecondLevelID);
             } else {
                 socket.emit('result', false);
@@ -138,7 +139,7 @@ io.on('connection', function (socket) {
                 players[socket.id].randomQuestionsThirdLevel.shift();
                 players[socket.id].chestThirdLevelID.shift();
 
-                socket.emit('result', true);
+                socket.emit('result', true, players[socket.id].hints[players[socket.id].chestThirdLevelID[0] - 1]);
                 console.log('<=[sent][%s]: correct, chest %s removed, remaining %s', socket.id, chest, players[socket.id].chestThirdLevelID);
             } else {
                 socket.emit('result', false);

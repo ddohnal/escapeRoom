@@ -1,6 +1,6 @@
-class control_menu extends Phaser.Scene {
+class controlMenu extends Phaser.Scene {
     constructor() {
-        super('control_menu');
+        super('controlMenu');
     }
 
     preload() {
@@ -8,9 +8,6 @@ class control_menu extends Phaser.Scene {
         this.load.image('button_back', 'client/assets/buttons/button_back.png');
     }
     create() {
-
-
-
         this.screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         this.screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 

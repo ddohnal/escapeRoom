@@ -18,9 +18,10 @@ window.onload = function () {
 
         scene: [
             menu,
-            control_menu,
+            controlMenu,
             loadAssets,
-            playGame
+            playGame,
+            gameOver
         ],
         parent: 'show-form',
         dom: {

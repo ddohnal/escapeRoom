@@ -24,7 +24,7 @@ class menu extends Phaser.Scene {
             .setScale(0.5)
             .setInteractive()
             .on('pointerdown', () => {
-                this.scene.start('control_menu');
+                this.scene.start('controlMenu');
             });
         this.rulesButton = this.add.image(this.screenCenterX, this.screenCenterY + 150, 'button_rules')
             .setScale(0.5)
