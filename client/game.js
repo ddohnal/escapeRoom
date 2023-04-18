@@ -21,7 +21,8 @@ window.onload = function () {
             controlMenu,
             loadAssets,
             playGame,
-            gameOver
+            gameOver,
+            gameFinished
         ],
         parent: 'show-form',
         dom: {

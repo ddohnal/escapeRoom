@@ -32,6 +32,8 @@ class loadAssets extends Phaser.Scene {
         this.load.image('chest_red_right', 'client/assets/images/chest_red_right.png');
 
         this.load.image('doors', 'client/assets/images/doors.png');
+        this.load.image('doors2', 'client/assets/images/doors2.png');
+        this.load.image('gate', 'client/assets/images/gate.png');
 
 
         this.load.image('candle1', 'client/assets/images/candleA_01.png');
