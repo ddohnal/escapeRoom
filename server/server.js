@@ -109,7 +109,7 @@ io.on('connection', function (socket) {
                 players[socket.id].chestFirstLevelID.shift();
 
 
-                socket.emit('result', true, players[socket.id].hints[players[socket.id].chestFirstLevelID[0] - 1]);
+                socket.emit('result', true, players[socket.id].hints[players[socket.id].chestFirstLevelID[0] - 1] ? players[socket.id].hints[players[socket.id].chestFirstLevelID[0] - 1] : "you can go to the next room");
                 console.log('<=[sent][%s]: correct, chest %s removed, remaining %s', socket.id, chest, players[socket.id].chestFirstLevelID);
             } else {
                 socket.emit('result', false);
@@ -124,7 +124,7 @@ io.on('connection', function (socket) {
                 players[socket.id].randomQuestionsSecondLevel.shift();
                 players[socket.id].chestSecondLevelID.shift();
 
-                socket.emit('result', true, players[socket.id].hints[players[socket.id].chestSecondLevelID[0] - 1]);
+                socket.emit('result', true, players[socket.id].hints[players[socket.id].chestSecondLevelID[0] - 1] ? players[socket.id].hints[players[socket.id].chestSecondLevelID[0] - 1] : "you can go to the next room");
                 console.log('<=[sent][%s]: correct, chest %s removed, remaining %s', socket.id, chest, players[socket.id].chestSecondLevelID);
             } else {
                 socket.emit('result', false);
@@ -139,7 +139,7 @@ io.on('connection', function (socket) {
                 players[socket.id].randomQuestionsThirdLevel.shift();
                 players[socket.id].chestThirdLevelID.shift();
 
-                socket.emit('result', true, players[socket.id].hints[players[socket.id].chestThirdLevelID[0] - 1]);
+                socket.emit('result', true, players[socket.id].hints[players[socket.id].chestThirdLevelID[0] - 1] ? players[socket.id].hints[players[socket.id].chestThirdLevelID[0] - 1] : "you can escape now!!!");
                 console.log('<=[sent][%s]: correct, chest %s removed, remaining %s', socket.id, chest, players[socket.id].chestThirdLevelID);
             } else {
                 socket.emit('result', false);
