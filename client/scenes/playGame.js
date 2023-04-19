@@ -491,7 +491,9 @@ class playGame extends Phaser.Scene {
 
     timerCounter() {
         this.timeLeft--;
-        const remainingTime = `Time left: ${this.timeLeft}s`;
+        const remainingMinutes = Math.floor(this.timeLeft / 60);
+        const remainingSeconds = this.timeLeft % 60;
+        const remainingTime = `Time left: ${remainingMinutes}m ${remainingSeconds}s `;
         this.timerText.setText(remainingTime);
 
         if (this.timeLeft < 20) {
