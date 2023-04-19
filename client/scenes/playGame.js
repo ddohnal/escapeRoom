@@ -24,6 +24,8 @@ class playGame extends Phaser.Scene {
         this.hintX = 0;
         this.hintY = 0;
 
+        this.stop = false;
+
         this.timeLeft = this.gameOverTime;
 
 
@@ -282,6 +284,13 @@ class playGame extends Phaser.Scene {
         this.player.body.velocity.x = 0;
         this.player.body.velocity.y = 0;
 
+        if (this.stop) {
+            this.disableInput()
+        }
+        else {
+            this.enableInput();
+        }
+
         // copying the player's movement
         this.isWithin.x = this.player.x;
         this.isWithin.y = this.player.y;
@@ -355,16 +364,18 @@ class playGame extends Phaser.Scene {
     doorOverlap(player, door) {
         if (this.interactKey.isDown) {
             if (door.getData('id') == this.currentLevel && this.score == 3) {
+                this.score += 1;
                 this.currentLevel += 1;
                 this.player.x = 176;
                 this.player.y = 2698;
             }
-            if (door.getData('id') == this.currentLevel && this.score == 6) {
+            if (door.getData('id') == this.currentLevel && this.score == 7) {
+                this.score += 1;
                 this.currentLevel += 1;
                 this.player.x = 2650;
                 this.player.y = 1700;
             }
-            if (door.getData('id') == this.currentLevel && this.score == 11) {
+            if (door.getData('id') == this.currentLevel && this.score == 12) {
                 this.scene.start('gameFinished');
             }
         }
@@ -372,6 +383,7 @@ class playGame extends Phaser.Scene {
     showQuestion(question) {
         var socket = this.socket;
         var scene = this;
+        this.stop = true;
         console.log(question);
         var level = this.currentLevel;
 
@@ -386,7 +398,7 @@ class playGame extends Phaser.Scene {
                 console.log(answer.value);
                 console.log("odesilam zpravu z levelu %s", level);
                 socket.emit('answer', answer.value, level);
-                scene.enableInput();
+                scene.stop = false;
                 form.destroy();
             }
         })
@@ -427,13 +439,14 @@ class playGame extends Phaser.Scene {
 
     inCorrectChest(message) {
         var scene = this;
+        this.stop = true;
         var form = this.add.dom(this.player.x - 200, this.player.y - 200).createFromCache("formInvalid");
         form.addListener("click");
 
         form.on("click", function (event) {
             if (event.target.name === "sendAnswer") {
 
-                scene.enableInput();
+                scene.stop = false;
                 form.destroy();
             }
         })

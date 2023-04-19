@@ -1,52 +1,52 @@
 {
     "history": [
         {
-            "q": "2+2=?",
-            "a": "4"
+            "q": "The population of the Czech Republic is approximately:",
+            "a": "10700000"
         },
         {
-            "q": "3+3=?",
-            "a": "6"
+            "q": "The second largest city in the Czech Republic is:",
+            "a": "Brno"
         },
         {
-            "q": "4+4=?",
-            "a": "8"
+            "q": "In which city can we find Villa Tugendhat?",
+            "a": "Brno"
         },
         {
-            "q": "5+5=?",
-            "a": "10"
+            "q": "The capital of the Czech Republic is:",
+            "a": "Prague"
         },
         {
-            "q": "6+6=?",
-            "a": "12"
+            "q": "Year of foundation of the Palacky University is:",
+            "a": "1573"
         }
     ],
     "geography": [
         {
-            "q": "2-2=?",
-            "a": "0"
+            "q": "The third largest city in the Czech Republic is:",
+            "a": "Ostrava"
         },
         {
-            "q": "3-2=?",
-            "a": "1"
+            "q": "The number of regions of the Czech Republic is:",
+            "a": "14"
         },
         {
-            "q": "4-2=?",
-            "a": "2"
+            "q": "The Czech Republic was established in:",
+            "a": "1993"
         },
         {
-            "q": "5-2=?",
-            "a": "3"
+            "q": "What are the colors on the Czech national flag? Blue, white and?",
+            "a": "red"
         },
         {
-            "q": "6-2=?",
-            "a": "4"
+            "q": "The Czech Republic is adjacent to Poland, Germany, Austria and?",
+            "a": "Slovakia"
         }
     ],
     "math": [
         {
-            "q": "2*2=?",
-            "a": "4"
+            "q": "The area of the Czech Republic rounded to tens of thousands is (indicate the result in square kilometers):",
+            "a": "80000"
         },
         {
             "q": "3*3=?",
