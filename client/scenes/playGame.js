@@ -375,7 +375,7 @@ class playGame extends Phaser.Scene {
                 this.player.x = 2650;
                 this.player.y = 1700;
             }
-            if (door.getData('id') == this.currentLevel && this.score == 12) {
+            if (door.getData('id') == this.currentLevel && this.score == 13) {
                 this.scene.start('gameFinished');
             }
         }
