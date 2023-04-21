@@ -277,6 +277,8 @@ class playGame extends Phaser.Scene {
         this.socket.on('questionToAsk', (question) => this.showQuestion(question));
         this.socket.on('result', (result, hint) => this.showResult(result, hint));
         this.socket.on('incorrect chest', (message) => this.inCorrectChest(message));
+
+        this.showDebugWalls();
     }
 
     update() {
@@ -362,23 +364,23 @@ class playGame extends Phaser.Scene {
     }
 
     doorOverlap(player, door) {
-        if (this.interactKey.isDown) {
-            if (door.getData('id') == this.currentLevel && this.score == 3) {
-                this.score += 1;
-                this.currentLevel += 1;
-                this.player.x = 176;
-                this.player.y = 2698;
-            }
-            if (door.getData('id') == this.currentLevel && this.score == 7) {
-                this.score += 1;
-                this.currentLevel += 1;
-                this.player.x = 2650;
-                this.player.y = 1700;
-            }
-            if (door.getData('id') == this.currentLevel && this.score == 13) {
-                this.scene.start('gameFinished');
-            }
+
+        if (door.getData('id') == this.currentLevel && this.score == 3) {
+            this.score += 1;
+            this.currentLevel += 1;
+            this.player.x = 176;
+            this.player.y = 2698;
         }
+        if (door.getData('id') == this.currentLevel && this.score == 7) {
+            this.score += 1;
+            this.currentLevel += 1;
+            this.player.x = 2650;
+            this.player.y = 1700;
+        }
+        if (door.getData('id') == this.currentLevel && this.score == 13) {
+            this.scene.start('gameFinished');
+        }
+
     }
     showQuestion(question) {
         var socket = this.socket;
@@ -513,5 +515,12 @@ class playGame extends Phaser.Scene {
             this.timerText.setColor('#FF0000');
             this.timerText.setScale(1.5); // nastaví červenou barvu
         }
+    }
+    showDebugWalls() {
+        const debugGraphics = this.add.graphics().setAlpha(0.7);
+        this.wallsLayer.renderDebug(debugGraphics, {
+            tileColor: null,
+            collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
+        });
     }
 }
