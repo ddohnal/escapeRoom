@@ -392,16 +392,16 @@ class playGame extends Phaser.Scene {
 
         var form = this.add.dom(this.player.x - 200, this.player.y - 200).createFromCache("form");
         document.getElementById('q').innerHTML = question;
+        form.addListener("click");
+        form.addListener("keyup");
 
         var input = form.getChildByName("answer");
         input.focus();
 
-        form.addListener("keyup"); // přidání události pro stisknutí klávesy
-
         form.on("keyup", function (event) {
             if (event.key === "Enter") { // kontrola, zda byla stisknuta klávesa Enter
                 event.preventDefault(); // zamezení výchozího chování pro stisknutí Enter
-                var answer = this.getChildByName("answer");
+                var answer = input;
                 console.log(answer.value);
                 console.log("odesilam zpravu z levelu %s", level);
                 socket.emit('answer', answer.value, level);
@@ -409,10 +409,9 @@ class playGame extends Phaser.Scene {
                 form.destroy();
             }
         });
-
         form.on("click", function (event) {
             if (event.target.name === "sendAnswer") {
-                var answer = this.getChildByName("answer");
+                var answer = input;
                 console.log(answer.value);
                 console.log("odesilam zpravu z levelu %s", level);
                 socket.emit('answer', answer.value, level);
@@ -421,7 +420,6 @@ class playGame extends Phaser.Scene {
             }
         });
     }
-
 
     showResult(result, hint) {
         // inform user about the result 
