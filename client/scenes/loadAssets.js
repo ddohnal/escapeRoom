@@ -7,6 +7,8 @@ class loadAssets extends Phaser.Scene {
         this.load.image('star', 'client/assets/images/star.png');
         this.load.image('chest', 'client/assets/images/box.png');
 
+        this.load.image('button_wrong_answer', 'client/assets/buttons/button_wrong_answer.png');
+
         this.load.image('ui-heart-empty', 'client/assets/images/ui_heart_empty.png');
         this.load.image('ui-heart-full', 'client/assets/images/ui_heart_full.png');
 

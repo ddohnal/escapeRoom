@@ -86,9 +86,9 @@ class playGame extends Phaser.Scene {
 
         this.style = { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
         //hp text
-        this.hpText = this.add.text(0, 50, "HP: " + this.health, this.style);
-        this.hpText.scrollFactorX = 0
-        this.hpText.scrollFactorY = 0
+        // this.hpText = this.add.text(0, 50, "HP: " + this.health, this.style);
+        // this.hpText.scrollFactorX = 0
+        // this.hpText.scrollFactorY = 0
         // information text in the upper left corner
 
         this.movementText = this.add.text(0, 100, "Movement keys: W,A,S,D", this.style);
@@ -234,12 +234,11 @@ class playGame extends Phaser.Scene {
             candle.setDepth(1);
         });
 
-        //game over text
-        this.gameOverText = this.add.text(this.screenCenterX, 100, 'Game Over', { fontSize: '64px', fill: '#FFF' });
-        this.gameOverText.setOrigin(0.5, 0.5);
-        this.gameOverText.scrollFactorX = 0;
-        this.gameOverText.scrollFactorY = 0;
-        this.gameOverText.visible = false;
+
+        this.wrongAnswerButton = this.add.image(this.hintX, this.hintY - 30, 'button_wrong_answer')
+            .setScale(0.15)
+            .setAlpha(0);
+
 
         this.cameras.main.startFollow(this.player);
 
@@ -278,7 +277,8 @@ class playGame extends Phaser.Scene {
         this.socket.on('result', (result, hint) => this.showResult(result, hint));
         this.socket.on('incorrect chest', (message) => this.inCorrectChest(message));
 
-        this.showDebugWalls();
+        // collision box debug
+        //this.showDebugWalls();
     }
 
     update() {
@@ -343,7 +343,7 @@ class playGame extends Phaser.Scene {
         }
 
         //hp text update
-        this.hpText.setText("HP: " + this.health);
+        // this.hpText.setText("HP: " + this.health);
 
         //light
         this.light.x = this.player.x;
@@ -360,6 +360,7 @@ class playGame extends Phaser.Scene {
             this.hintY = chest.y;
             console.log('Chest id: ' + chest.getData('id'));
             this.socket.emit('getQuestion', chest.getData('id'), this.currentLevel);
+            this.wrongAnswerButton.setAlpha(0);
         }
     }
 
@@ -391,20 +392,36 @@ class playGame extends Phaser.Scene {
 
         var form = this.add.dom(this.player.x - 200, this.player.y - 200).createFromCache("form");
         document.getElementById('q').innerHTML = question;
-        form.addListener("click");
 
-        form.on("click", function (event) {
-            if (event.target.name === "sendAnswer") {
+        var input = form.getChildByName("answer");
+        input.focus();
+
+        form.addListener("keyup"); // přidání události pro stisknutí klávesy
+
+        form.on("keyup", function (event) {
+            if (event.key === "Enter") { // kontrola, zda byla stisknuta klávesa Enter
+                event.preventDefault(); // zamezení výchozího chování pro stisknutí Enter
                 var answer = this.getChildByName("answer");
-                // console.log(answer.value);
                 console.log(answer.value);
                 console.log("odesilam zpravu z levelu %s", level);
                 socket.emit('answer', answer.value, level);
                 scene.stop = false;
                 form.destroy();
             }
-        })
+        });
+
+        form.on("click", function (event) {
+            if (event.target.name === "sendAnswer") {
+                var answer = this.getChildByName("answer");
+                console.log(answer.value);
+                console.log("odesilam zpravu z levelu %s", level);
+                socket.emit('answer', answer.value, level);
+                scene.stop = false;
+                form.destroy();
+            }
+        });
     }
+
 
     showResult(result, hint) {
         // inform user about the result 
@@ -429,12 +446,7 @@ class playGame extends Phaser.Scene {
 
         } else {
             console.log('wrong answer');
-            this.health -= 1;
-
-            if (this.health <= 0) {
-                this.endGame();
-            }
-            console.log(this.health);
+            this.wrongAnswer();
         }
         this.enableInput();
     }
@@ -502,6 +514,11 @@ class playGame extends Phaser.Scene {
 
     endGame() {
         this.scene.start('gameOver');
+    }
+    wrongAnswer() {
+        this.wrongAnswerButton.x = this.hintX;
+        this.wrongAnswerButton.y = this.hintY;
+        this.wrongAnswerButton.setAlpha(1);
     }
 
     timerCounter() {
