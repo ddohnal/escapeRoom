@@ -13,6 +13,7 @@ class playGame extends Phaser.Scene {
         this.screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         this.screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 
+
         this.currentLevel = 1;
         this.score = 0;
         this.health = 3;

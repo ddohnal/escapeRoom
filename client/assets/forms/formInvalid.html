@@ -4,13 +4,20 @@
         <div
             style="z-index: 0; display: block; position: absolute; opacity: 1; pointer-events: auto; mix-blend-mode: normal; transform: matrix(1, 0, 0, 1, 250, 124.5) skew(0rad, 0rad) rotate3d(0, 0, 0, 0deg); transform-origin: 50% 50%;">
             <style>
+                @font-face {
+                    font-family: "Diablo";
+                    src: url('client/assets/fonts/Diablo.ttf') format('truetype');
+                }
+
                 .ask {
-                    background: #eceeee;
-                    border: 1px solid #42464b;
-                    border-radius: 6px;
-                    height: 100px;
+                    background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(15, 15, 15, 1) 100%);
                     margin: 20px auto 0;
+                    padding: 20px;
                     width: 298px;
+                    font-family: "Diablo", sans-serif;
+                    color: #d6c199;
+                    border: 2mm ridge #989867;
+                    text-align: center;
                 }
 
                 .ask h1 {
@@ -28,28 +35,23 @@
                     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 #fff;
                 }
 
-
-
                 #invalidText {
-                    margin-top: 10px;
-                    font-family: Arial, "Helvetica", sans-serif;
                     font-size: 16px;
                     display: block;
                     text-align: center;
-
+                    font-family: "Diablo", sans-serif;
                 }
 
                 input[type="text"] {
-                    background: linear-gradient(top, #d6d7d7, #dee0e0);
+                    background: white;
+                    font-family: "Diablo", sans-serif;
+                    color: black;
                     border: 1px solid #a1a3a3;
                     border-radius: 4px;
-                    box-shadow: 0 1px #fff;
                     box-sizing: border-box;
-                    color: #696969;
                     height: 39px;
-                    margin: 29px 0 0 29px;
+                    margin: 31px 0 0 0;
                     padding-left: 37px;
-                    transition: box-shadow 0.3s;
                     width: 240px;
                 }
 
@@ -57,26 +59,21 @@
                     width: 240px;
                     height: 35px;
                     display: block;
-                    font-family: Arial, "Helvetica", sans-serif;
-                    font-size: 16px;
-                    font-weight: bold;
-                    color: #fff;
+                    background: #802000;
+                    font-family: "Diablo", sans-serif;
+                    color: white;
+                    font-size: 24px;
                     text-decoration: none;
                     text-transform: uppercase;
                     text-align: center;
-                    text-shadow: 1px 1px 0px #37a69b;
-                    padding-top: 6px;
-                    margin: 0px 0 0 29px;
+                    margin: 0 0 0 29px;
                     position: relative;
                     cursor: pointer;
                     border: none;
-                    background-color: #37a69b;
-                    background-image: linear-gradient(top, #3db0a6, #3111);
                     border-top-left-radius: 5px;
                     border-top-right-radius: 5px;
                     border-bottom-right-radius: 5px;
                     border-bottom-left-radius: 5px;
-                    box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #497a78, 0px 10px 5px #999;
                 }
 
                 .shadow {
