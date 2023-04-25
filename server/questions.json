@@ -19,6 +19,30 @@
         {
             "q": "Year of foundation of the Palacky University is:",
             "a": "1573"
+        },
+        {
+            "q": "When did the Velvet Revolution take place?",
+            "a": "1989"
+        },
+        {
+            "q": "Who was the first president of the independent Czech Republic?",
+            "a": "Vaclav Havel"
+        },
+        {
+            "q": "International Organization for Military Cooperation, established on April 4, 1949.",
+            "a": "NATO"
+        },
+        {
+            "q": "The longest river in the Czech Republic?",
+            "a": "Vltava"
+        },
+        {
+            "q": "Which is the biggest Polish port?",
+            "a": "Gdansk"
+        },
+        {
+            "q": "In which of our three states is the highest mountain?",
+            "a": "Bulgaria"
         }
     ],
     "geography": [
@@ -41,6 +65,46 @@
         {
             "q": "The Czech Republic is adjacent to Poland, Germany, Austria and?",
             "a": "Slovakia"
+        },
+        {
+            "q": "Which of our states has the largest land area?",
+            "a": "Poland"
+        },
+        {
+            "q": "Which of our states has the city with the largest population?",
+            "a": "Poland"
+        },
+        {
+            "q": "To which language family do the languages of our countries belong?",
+            "a": "slovanic"
+        },
+        {
+            "q": "Is there a country among us from which it is impossible to reach the Black Sea by water?",
+            "a": "no"
+        },
+        {
+            "q": "In which of our states does midnight come first? ",
+            "a": "Bulgaria"
+        },
+        {
+            "q": "Which mountain range divides Bulgaria into two climate zones?",
+            "a": "Stara planina"
+        },
+        {
+            "q": "Which of our states border with the most countries?",
+            "a": "Poland"
+        },
+        {
+            "q": "Which mountain range is located in southwestern Bulgaria?",
+            "a": "Pirin"
+        },
+        {
+            "q": "What is the largest port in Bulgaria on the Black Sea?",
+            "a": "Varna"
+        },
+        {
+            "q": "What is the name of the highest mountain in Bulgaria?",
+            "a": "Musala"
         }
     ],
     "math": [
@@ -49,20 +113,44 @@
             "a": "80000"
         },
         {
-            "q": "3*3=?",
-            "a": "9"
+            "q": "What is the name of the longest river in Bulgaria?",
+            "a": "Dunaj"
         },
         {
-            "q": "4*4=?",
-            "a": "16"
+            "q": "What is the area of Bulgaria in square kilometers rounded to thousands?",
+            "a": "110000"
         },
         {
-            "q": "5*5=?",
+            "q": "What is the Earth's radius?",
+            "a": "6378"
+        },
+        {
+            "q": "How many seconds does a year have (consider that a year has 365 days)?",
+            "a": "31536000"
+        },
+        {
+            "q": "What is an angle that is less than 90 degrees called?",
+            "a": "acute angle"
+        },
+        {
+            "q": "What is the result of the sum of the first 100 even numbers?",
+            "a": "10100"
+        },
+        {
+            "q": "What is the result of the sum of the first 100 odd numbers?",
+            "a": "10000"
+        },
+        {
+            "q": "What is the square root difference of the squares of 5 and 3?",
+            "a": "4"
+        },
+        {
+            "q": "What is the greatest common divisor of 512 and 312?",
+            "a": "8"
+        },
+        {
+            "q": "For the fencing of a rectangular yard, we need 86 m of fence. Find the length (in metres) of the yard if it has an area of 450 square metres.",
             "a": "25"
-        },
-        {
-            "q": "6*6=?",
-            "a": "36"
         }
     ]
 }
