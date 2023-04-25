@@ -19,7 +19,7 @@ class playGame extends Phaser.Scene {
         this.health = 3;
 
         this.gameOver = false;
-        this.gameOverTime = 600;
+        this.gameOverTime = 900;
 
         this.hint = "";
         this.hintX = 0;
