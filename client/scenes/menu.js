@@ -26,11 +26,11 @@ class menu extends Phaser.Scene {
             .on('pointerdown', () => {
                 this.scene.start('controlMenu');
             });
-        this.rulesButton = this.add.image(this.screenCenterX, this.screenCenterY + 150, 'button_rules')
-            .setScale(0.5)
-            .setInteractive()
-            .on('pointerdown', () => {
-            });
+        // this.rulesButton = this.add.image(this.screenCenterX, this.screenCenterY + 150, 'button_rules')
+        //     .setScale(0.5)
+        //     .setInteractive()
+        //     .on('pointerdown', () => {
+        //     });
 
     }
 

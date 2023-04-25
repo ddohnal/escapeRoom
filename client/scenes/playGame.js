@@ -455,6 +455,7 @@ class playGame extends Phaser.Scene {
         this.stop = true;
         var form = this.add.dom(this.player.x - 200, this.player.y - 200).createFromCache("formInvalid");
         form.addListener("click");
+        form.addListener("keyup");
 
         form.on("click", function (event) {
             if (event.target.name === "sendAnswer") {
@@ -463,6 +464,8 @@ class playGame extends Phaser.Scene {
                 form.destroy();
             }
         })
+
+
         console.log('incorrect chest!');
     }
 
