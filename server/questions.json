@@ -118,7 +118,7 @@
         },
         {
             "q": "What is the area of Bulgaria in square kilometers rounded to thousands?",
-            "a": "110000"
+            "a": "111000"
         },
         {
             "q": "What is the Earth's radius in kilometers?",
@@ -147,10 +147,6 @@
         {
             "q": "What is the greatest common divisor of 512 and 312?",
             "a": "8"
-        },
-        {
-            "q": "For the fencing of a rectangular yard, we need 86 m of fence. Find the length (in metres) of the yard if it has an area of 450 square metres.",
-            "a": "25"
         }
     ]
 }
