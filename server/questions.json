@@ -1,11 +1,11 @@
 {
     "history": [
         {
-            "q": "The population of the Czech Republic rounded to millions is :",
+            "q": "The population of the Czech Republic rounded to millions is?",
             "a": "11000000"
         },
         {
-            "q": "The second largest city in the Czech Republic is:",
+            "q": "The second largest city in the Czech Republic is?",
             "a": "Brno"
         },
         {
@@ -13,11 +13,11 @@
             "a": "Brno"
         },
         {
-            "q": "The capital of the Czech Republic is:",
+            "q": "The capital of the Czech Republic is?",
             "a": "Prague"
         },
         {
-            "q": "Year of foundation of the Palacky University is:",
+            "q": "Year of foundation of the Palacky University is?",
             "a": "1573"
         },
         {
@@ -47,15 +47,15 @@
     ],
     "geography": [
         {
-            "q": "The third largest city in the Czech Republic is:",
+            "q": "The third largest city in the Czech Republic is?",
             "a": "Ostrava"
         },
         {
-            "q": "The number of regions of the Czech Republic is:",
+            "q": "The number of regions of the Czech Republic is?",
             "a": "14"
         },
         {
-            "q": "The Czech Republic was established in:",
+            "q": "The Czech Republic was established in?",
             "a": "1993"
         },
         {
