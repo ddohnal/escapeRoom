@@ -382,8 +382,8 @@ class playGame extends Phaser.Scene {
                 event.preventDefault(); // zamezení výchozího chování pro stisknutí Enter
                 var answer = input;
                 answer.value = answer.value.toLowerCase();
-                answer.value = answer.value.replace(/\s/g, "");
-                answer.value = answer.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                answer.value = answer.value.replace(/\s/g, ""); //odstraneni mezer
+                answer.value = answer.value.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); //odstraneni diakritiky
                 // console.log(answer.value);
                 // console.log("odesilam zpravu z levelu %s", level);
                 socket.emit('answer', answer.value, level);
@@ -395,8 +395,8 @@ class playGame extends Phaser.Scene {
             if (event.target.name === "sendAnswer") {
                 var answer = input;
                 answer.value = answer.value.toLowerCase();
-                answer.value = answer.value.replace(/\s/g, "");
-                answer.value = answer.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                answer.value = answer.value.replace(/\s/g, ""); //odstraneni mezer
+                answer.value = answer.value.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); //odstraneni diakritiky
                 // console.log(answer.value);
                 // console.log("odesilam zpravu z levelu %s", level);
                 socket.emit('answer', answer.value, level);
@@ -448,8 +448,6 @@ class playGame extends Phaser.Scene {
                 form.destroy();
             }
         })
-
-
         // console.log('incorrect chest!');
     }
 
@@ -515,8 +513,8 @@ class playGame extends Phaser.Scene {
         this.timerText.setText(remainingTime);
 
         if (this.timeLeft < 20) {
-            this.timerText.setColor('#FF0000');
-            this.timerText.setScale(1.5); // nastaví červenou barvu
+            this.timerText.setColor('#FF0000'); // nastaví červenou barvu
+            this.timerText.setScale(1.5);
         }
     }
     showDebugWalls() {
