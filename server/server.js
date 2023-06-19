@@ -101,7 +101,7 @@ io.on('connection', function (socket) {
         console.log('=>[received][%s]: answer "%s in level: %s"', socket.id, userAnswer, level);
 
         if (level == 1) {
-            if (players[socket.id].answersFirtLevel[players[socket.id].randomQuestionsFirstLevel[0]] === userAnswer) {
+            if (players[socket.id].answersFirtLevel[players[socket.id].randomQuestionsFirstLevel[0]].toLowerCase().replace(/\s/g, "").normalize("NFD").replace(/[\u0300-\u036f]/g, "") === userAnswer) {
 
                 let chest = players[socket.id].chestFirstLevelID[0];
 
@@ -117,7 +117,7 @@ io.on('connection', function (socket) {
             }
         }
         if (level == 2) {
-            if (players[socket.id].answersSecondLevel[players[socket.id].randomQuestionsSecondLevel[0]] === userAnswer) {
+            if (players[socket.id].answersSecondLevel[players[socket.id].randomQuestionsSecondLevel[0]].toLowerCase().replace(/\s/g, "").normalize("NFD").replace(/[\u0300-\u036f]/g, "") === userAnswer) {
 
                 let chest = players[socket.id].chestSecondLevelID[0];
 
@@ -132,7 +132,7 @@ io.on('connection', function (socket) {
             }
         }
         if (level == 3) {
-            if (players[socket.id].answersThirdLevel[players[socket.id].randomQuestionsThirdLevel[0]] === userAnswer) {
+            if (players[socket.id].answersThirdLevel[players[socket.id].randomQuestionsThirdLevel[0]].toLowerCase().replace(/\s/g, "").normalize("NFD").replace(/[\u0300-\u036f]/g, "") === userAnswer) {
 
                 let chest = players[socket.id].chestThirdLevelID[0];
 

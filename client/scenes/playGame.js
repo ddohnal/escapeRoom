@@ -372,14 +372,17 @@ class playGame extends Phaser.Scene {
             this.currentLevel += 1;
             this.player.x = 176;
             this.player.y = 2698;
+            console.log(this.score);
         }
         if (door.getData('id') == this.currentLevel && this.score == 7) {
             this.score += 1;
             this.currentLevel += 1;
             this.player.x = 2650;
             this.player.y = 1700;
+            console.log(this.score);
         }
         if (door.getData('id') == this.currentLevel && this.score == 13) {
+            console.log(this.score);
             this.scene.start('gameFinished');
         }
 
@@ -403,6 +406,9 @@ class playGame extends Phaser.Scene {
             if (event.key === "Enter") { // kontrola, zda byla stisknuta klávesa Enter
                 event.preventDefault(); // zamezení výchozího chování pro stisknutí Enter
                 var answer = input;
+                answer.value = answer.value.toLowerCase();
+                answer.value = answer.value.replace(/\s/g, "");
+                answer.value = answer.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 console.log(answer.value);
                 console.log("odesilam zpravu z levelu %s", level);
                 socket.emit('answer', answer.value, level);
@@ -413,6 +419,9 @@ class playGame extends Phaser.Scene {
         form.on("click", function (event) {
             if (event.target.name === "sendAnswer") {
                 var answer = input;
+                answer.value = answer.value.toLowerCase();
+                answer.value = answer.value.replace(/\s/g, "");
+                answer.value = answer.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 console.log(answer.value);
                 console.log("odesilam zpravu z levelu %s", level);
                 socket.emit('answer', answer.value, level);
