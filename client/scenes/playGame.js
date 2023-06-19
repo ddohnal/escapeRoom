@@ -28,11 +28,7 @@ class playGame extends Phaser.Scene {
         this.stop = false;
 
         this.timeLeft = this.gameOverTime;
-
-
-        console.log(this.health);
-
-
+        // console.log(this.health);
 
         //tilesmap
         const map = this.make.tilemap({ key: "map", tileWidth: 30, tileHeight: 30 });
@@ -40,7 +36,6 @@ class playGame extends Phaser.Scene {
         const tileset = map.addTilesetImage("tiles1", "tiles");
         const propstileset = map.addTilesetImage("tiles2", "tiles_props")
         const decorativetileset = map.addTilesetImage("tiles3", "tiles_decorative")
-        // const furnitureTileSet = map.addTilesetImage("tiles2", "propstileset");
 
         this.groundLayer = map.createLayer("Ground", tileset, 0, 0);
         this.groundLayer.setScale(1.75);
@@ -65,7 +60,7 @@ class playGame extends Phaser.Scene {
             let obj = this.itemsGroup.create(object.x * 1.75 + object.width, object.y * 1.75 - object.width, object.name).setData('id', object.properties[0].value);
             obj.setScale(1.75);
             let name = object.name;
-            console.log(name + obj.getData('id'));
+            // console.log(name + obj.getData('id'));
             obj.body.width = object.width;
             obj.body.height = object.height;
             obj.setPipeline('Light2D');
@@ -78,7 +73,7 @@ class playGame extends Phaser.Scene {
             let obj = this.doorsGroup.create(object.x * 1.75 + object.width, object.y * 1.75 - object.width, object.name).setData('id', object.properties[1].value);
             obj.setScale(1.75);
             let name = object.name;
-            console.log("name: " + name + " id: " + obj.getData('id'));
+            // console.log("name: " + name + " id: " + obj.getData('id'));
             obj.body.width = object.width;
             obj.body.height = object.height;
             obj.setPipeline('Light2D');
@@ -86,11 +81,6 @@ class playGame extends Phaser.Scene {
 
 
         this.style = { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-        //hp text
-        // this.hpText = this.add.text(0, 50, "HP: " + this.health, this.style);
-        // this.hpText.scrollFactorX = 0
-        // this.hpText.scrollFactorY = 0
-        // information text in the upper left corner
 
         this.movementText = this.add.text(0, 100, "Movement keys: W,A,S,D", this.style);
         this.movementText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
@@ -105,8 +95,6 @@ class playGame extends Phaser.Scene {
 
         this.hintText = this.add.text(100, 20, "Hint: " + this.hint, this.style);
         this.hintText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
-        //this.hintText.scrollFactorX = 0
-        //this.hintText.scrollFactorY = 0
         this.hintText.setOrigin(0.5, 0.5);
         this.hintText.visible = false
 
@@ -140,8 +128,6 @@ class playGame extends Phaser.Scene {
         this.isWithin = this.physics.add.sprite(100, 450);
         this.isWithin.displayWidth = 60 * 1.2;
         this.isWithin.displayHeight = 65 * 1.5;
-
-
 
         // keybindings
         this.leftKey = this.input.keyboard.addKey('A');
@@ -219,8 +205,6 @@ class playGame extends Phaser.Scene {
             key: 'burn',
             frames: [
                 { key: 'candle1', frame: null },
-                // { key: 'candle2', frame: null },
-                // { key: 'candle3', frame: null },
                 { key: 'candle4', frame: null, duration: 50 }
             ],
             frameRate: 8,
@@ -240,18 +224,12 @@ class playGame extends Phaser.Scene {
             .setScale(0.15)
             .setAlpha(0);
 
-
         this.cameras.main.startFollow(this.player);
-
 
         this.light = this.lights.addLight(this.player.x, this.player.y, 150).setColor(0xFFFFFF).setIntensity(5);
 
         this.bridgeLight1 = this.lights.addLight(1473, 1932, 150).setColor(0xBD8AC5).setIntensity(3);
         this.bridgeLight2 = this.lights.addLight(1129, 1456, 150).setColor(0xBD8AC5).setIntensity(3);
-        // this.bridgeLight3 = this.lights.addLight(1129, 1308, 150).setColor(0xBD8AC5).setIntensity(3);
-        // this.bridgeLight4 = this.lights.addLight(1473, 1308, 150).setColor(0xBD8AC5).setIntensity(3);
-
-        // this.candleLight = this.lights.addLight(472, 2268, 100).setColor(0xEEB950).setIntensity(1);
 
         // light affect object        
         this.groundLayer.setPipeline('Light2D');
@@ -343,9 +321,6 @@ class playGame extends Phaser.Scene {
             this.player.anims.play('stop', true);
         }
 
-        //hp text update
-        // this.hpText.setText("HP: " + this.health);
-
         //light
         this.light.x = this.player.x;
         this.light.y = this.player.y;
@@ -359,7 +334,7 @@ class playGame extends Phaser.Scene {
             this.disableInput();
             this.hintX = chest.x;
             this.hintY = chest.y;
-            console.log('Chest id: ' + chest.getData('id'));
+            // console.log('Chest id: ' + chest.getData('id'));
             this.socket.emit('getQuestion', chest.getData('id'), this.currentLevel);
             this.wrongAnswerButton.setAlpha(0);
         }
@@ -372,17 +347,17 @@ class playGame extends Phaser.Scene {
             this.currentLevel += 1;
             this.player.x = 176;
             this.player.y = 2698;
-            console.log(this.score);
+            // console.log(this.score);
         }
         if (door.getData('id') == this.currentLevel && this.score == 7) {
             this.score += 1;
             this.currentLevel += 1;
             this.player.x = 2650;
             this.player.y = 1700;
-            console.log(this.score);
+            // console.log(this.score);
         }
         if (door.getData('id') == this.currentLevel && this.score == 13) {
-            console.log(this.score);
+            // console.log(this.score);
             this.scene.start('gameFinished');
         }
 
@@ -391,7 +366,7 @@ class playGame extends Phaser.Scene {
         var socket = this.socket;
         var scene = this;
         this.stop = true;
-        console.log(question);
+        // console.log(question);
         var level = this.currentLevel;
 
         var form = this.add.dom(this.player.x - 200, this.player.y - 200).createFromCache("form");
@@ -409,8 +384,8 @@ class playGame extends Phaser.Scene {
                 answer.value = answer.value.toLowerCase();
                 answer.value = answer.value.replace(/\s/g, "");
                 answer.value = answer.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                console.log(answer.value);
-                console.log("odesilam zpravu z levelu %s", level);
+                // console.log(answer.value);
+                // console.log("odesilam zpravu z levelu %s", level);
                 socket.emit('answer', answer.value, level);
                 scene.stop = false;
                 form.destroy();
@@ -422,8 +397,8 @@ class playGame extends Phaser.Scene {
                 answer.value = answer.value.toLowerCase();
                 answer.value = answer.value.replace(/\s/g, "");
                 answer.value = answer.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                console.log(answer.value);
-                console.log("odesilam zpravu z levelu %s", level);
+                // console.log(answer.value);
+                // console.log("odesilam zpravu z levelu %s", level);
                 socket.emit('answer', answer.value, level);
                 scene.stop = false;
                 form.destroy();
@@ -434,10 +409,10 @@ class playGame extends Phaser.Scene {
     showResult(result, hint) {
         // inform user about the result 
         if (result) {
-            console.log('correct answer');
-            console.log(hint);
+            // console.log('correct answer');
+            // console.log(hint);
             if (hint) {
-                console.log(hint);
+                // console.log(hint);
                 this.hint = hint;
                 this.hintText.setText("Hint: " + this.hint)
                 this.hintText.x = this.hintX;
@@ -450,10 +425,10 @@ class playGame extends Phaser.Scene {
             }
 
             this.score += 1;
-            console.log("score is: " + this.score);
+            // console.log("score is: " + this.score);
 
         } else {
-            console.log('wrong answer');
+            // console.log('wrong answer');
             this.wrongAnswer();
         }
         this.enableInput();
@@ -475,7 +450,7 @@ class playGame extends Phaser.Scene {
         })
 
 
-        console.log('incorrect chest!');
+        // console.log('incorrect chest!');
     }
 
     disableInput() {
